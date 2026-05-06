@@ -52,6 +52,26 @@
         /* Sembunyikan scrollbar di mobile navbar biar estetik */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* KUNCI HTML RESPONSIVE (Agar akses produk tidak terpotong di HP) */
+        #view-product-content * {
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+            word-wrap: break-word !important;
+        }
+        #view-product-content img, 
+        #view-product-content video, 
+        #view-product-content iframe {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 0.5rem;
+        }
+        #view-product-content table {
+            display: block;
+            width: 100% !important;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
 <body class="bg-dark text-textMain font-sans antialiased h-screen overflow-hidden flex relative">
@@ -415,8 +435,11 @@
             </div>
 
             <!-- NAVBAR BOTTOM MOBILE (Hanya Tampil di HP/Tablet) -->
-            <nav id="mobile-nav-menu" class="lg:hidden fixed bottom-0 w-full bg-card border-t border-borderMain z-40 flex items-center overflow-x-auto no-scrollbar shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)] h-[70px]">
-                <!-- Item disuntikkan via JS -->
+            <nav class="lg:hidden fixed bottom-0 w-full bg-card border-t border-borderMain z-40 overflow-x-auto no-scrollbar shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.3)] h-[70px]">
+                <!-- Pembungkus untuk membuat konten otomatis berada di tengah (justify-center) -->
+                <div id="mobile-nav-menu" class="flex items-center justify-center min-w-full h-full px-2">
+                    <!-- Item disuntikkan via JS -->
+                </div>
             </nav>
 
         </main>
@@ -584,12 +607,12 @@
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] sm:w-full max-w-2xl bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
             <div class="flex justify-between items-center p-4 sm:p-6 border-b border-borderMain bg-[#1A1A1A] flex-shrink-0">
                 <h3 class="text-lg sm:text-xl font-bold text-textMain flex items-center truncate mr-2" id="view-product-title">
-                    <i data-lucide="box" class="w-5 h-5 mr-2 text-primary flex-shrink-0"></i> Detail Produk
+                    <i data-lucide="box" class="w-5 h-5 mr-2 text-primary flex-shrink-0"></i> <span class="truncate">Detail Produk</span>
                 </h3>
                 <button onclick="closeModal('modal-view-product')" class="text-gray-400 hover:text-gray-200 bg-[#222] p-1 rounded-md shadow-sm flex-shrink-0"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="p-4 sm:p-8 overflow-y-auto bg-dark">
-                <div id="view-product-content" class="prose max-w-none text-gray-300 leading-relaxed text-sm sm:text-base overflow-x-hidden break-words">
+                <div id="view-product-content" class="prose max-w-none text-gray-300 leading-relaxed text-sm sm:text-base break-words">
                     <!-- Konten HTML diinject via JS -->
                 </div>
             </div>
@@ -1003,16 +1026,6 @@
             }
             addNavItems('Akun Saya', 'user', 'account', false);
 
-            // Tambahan Tombol Buat Agency (Khusus Desktop Navbar Sidebar)
-            const createBtnContainer = document.createElement('div');
-            createBtnContainer.className = 'mt-6 px-4';
-            createBtnContainer.innerHTML = `
-                <button onclick="openCreateAgencyModal()" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
-                    <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> New Agency
-                </button>
-            `;
-            navMenu.appendChild(createBtnContainer);
-            
             lucide.createIcons();
             renderDashboard();
             renderAgenciesTable();
