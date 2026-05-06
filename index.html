@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iMersGate - Dashboard</title>
+    <title id="doc-title">iMersGate - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -18,8 +18,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         .loader { border: 3px solid #f3f3f3; border-top: 3px solid #4f46e5; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Render HTML dari Konten Produk */
         .prose a { color: #4f46e5; text-decoration: underline; }
         .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;}
     </style>
@@ -40,10 +38,12 @@
     <!-- LOADING VIEW -->
     <div id="loading-view" class="fixed inset-0 bg-gray-50 z-50 flex flex-col items-center justify-center fade-in">
         <div class="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center max-w-sm w-full">
-            <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">
-                <i data-lucide="shield-check" class="w-6 h-6 text-primary"></i>
+            <div id="loading-logo" class="w-16 h-16 mb-4 flex items-center justify-center">
+                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-6 h-6 text-primary"></i>
+                </div>
             </div>
-            <h1 class="text-2xl font-bold text-gray-900 mb-2">iMersGate</h1>
+            <h1 id="loading-brand-name" class="text-2xl font-bold text-gray-900 mb-2">Memuat Sistem...</h1>
             <p class="text-gray-500 text-sm mb-6 text-center">Menghubungkan ke server...</p>
             <div class="loader"></div>
         </div>
@@ -64,13 +64,15 @@
     <!-- LOGIN VIEW -->
     <div id="login-view" class="hidden fixed inset-0 bg-gray-50 z-40 flex flex-col items-center justify-center fade-in">
         <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
-            <div class="flex justify-center mb-6">
-                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
-                    <i data-lucide="layers" class="w-6 h-6 text-primary"></i>
+            <div class="flex flex-col items-center justify-center mb-6">
+                <div id="login-logo" class="w-16 h-16 mb-2 flex items-center justify-center">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                        <i data-lucide="layers" class="w-6 h-6 text-primary"></i>
+                    </div>
                 </div>
+                <h2 id="login-brand-name" class="text-2xl font-bold text-gray-900 text-center">Welcome Back</h2>
             </div>
-            <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">Welcome Back</h2>
-            <p class="text-gray-500 text-sm text-center mb-8">Masuk ke akun iMersGate Anda.</p>
+            <p class="text-gray-500 text-sm text-center mb-8">Masuk ke akun Anda.</p>
             
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
@@ -92,10 +94,10 @@
     <div id="app-view" class="hidden w-full h-full flex">
         <aside class="w-64 bg-dark text-white flex flex-col transition-all duration-300 z-20 shadow-xl relative">
             <div class="h-16 flex items-center px-6 border-b border-gray-800">
-                <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-indigo-500/30">
+                <div id="sidebar-logo" class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-indigo-500/30 overflow-hidden">
                     <i data-lucide="layers" class="w-5 h-5 text-white"></i>
                 </div>
-                <span class="text-lg font-bold tracking-wide">iMersGate</span>
+                <span id="sidebar-brand-name" class="text-lg font-bold tracking-wide truncate">iMersGate</span>
             </div>
             <nav class="flex-1 py-6 px-3 space-y-1" id="nav-menu"></nav>
             <div class="p-4 border-t border-gray-800">
@@ -164,11 +166,29 @@
                 <div id="view-settings" class="view-section hidden fade-in">
                     <div class="mb-6">
                         <h3 class="text-lg font-bold text-gray-900">Pengaturan Sistem</h3>
-                        <p class="text-sm text-gray-500">Konfigurasi API dan Gateway WhatsApp.</p>
+                        <p class="text-sm text-gray-500">Konfigurasi Identitas Aplikasi dan Gateway WhatsApp.</p>
                     </div>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-2xl">
                         <form id="form-update-settings" onsubmit="handleSaveSettings(event)" class="p-6 space-y-6">
                             
+                            <!-- Branding Settings -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <h4 class="text-sm font-bold text-blue-900 mb-4 flex items-center">
+                                    <i data-lucide="layout-template" class="w-4 h-4 mr-2"></i> Branding & Tampilan
+                                </h4>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Brand Aplikasi</label>
+                                        <input type="text" id="setting-brand-name" placeholder="Misal: iMersGate" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">URL Logo (Opsional)</label>
+                                        <input type="url" id="setting-logo-url" placeholder="https://domain.com/logo.png" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- WA Settings -->
                             <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
                                 <h4 class="text-sm font-bold text-indigo-900 mb-4 flex items-center">
                                     <i data-lucide="message-square" class="w-4 h-4 mr-2"></i> WhatsApp Gateway Settings
@@ -176,14 +196,14 @@
                                 <div class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">WA Provider</label>
-                                        <select id="setting-wa-provider" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+                                        <select id="setting-wa-provider" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                             <option value="fonnte">Fonnte API</option>
                                             <option value="xsender">Xsender ID</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">API Token</label>
-                                        <input type="text" id="setting-wa-token" required placeholder="Masukkan Token/API Key WA Anda" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <input type="text" id="setting-wa-token" placeholder="Masukkan Token/API Key WA Anda" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Admin Sender Number <span class="text-xs text-gray-400 font-normal">(Wajib jika pakai Xsender)</span></label>
@@ -373,10 +393,13 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            
+            // Muat branding lokal terlebih dahulu untuk transisi UI yang halus
+            applyBranding(JSON.parse(localStorage.getItem('imersgate_branding') || '{}'));
+            
             fetchInitialData();
         });
 
-        // FUNGSI KOMUNIKASI API MENGGUNAKAN FETCH (REST)
         async function callBackend(action, payload = {}) {
             try {
                 const response = await fetch(SCRIPT_URL, {
@@ -386,11 +409,7 @@
                 });
 
                 const result = await response.json();
-                
-                if (!result.success) {
-                    throw new Error(result.error || "Terjadi kesalahan server.");
-                }
-                
+                if (!result.success) throw new Error(result.error || "Terjadi kesalahan server.");
                 return result.data;
             } catch (error) {
                 console.error("API Error:", error);
@@ -413,9 +432,18 @@
                 appState.user = data.user;
                 appState.products = data.products || [];
                 appState.agencies = data.agencies || [];
-                appState.settings = data.settings || {}; // Setingan untuk Admin
+                appState.settings = data.settings || {}; 
                 
                 if(appState.user.role === 'admin') appState.allProducts = data.products;
+                
+                // Terapkan dan simpan setting branding ke lokal
+                if (appState.settings) {
+                    localStorage.setItem('imersgate_branding', JSON.stringify({
+                        brandName: appState.settings.brandName,
+                        logoUrl: appState.settings.logoUrl
+                    }));
+                    applyBranding(appState.settings);
+                }
                 
                 buildUI();
                 
@@ -429,6 +457,8 @@
 
                 // Isi Form Setting (Hanya Admin)
                 if (appState.user.role === 'admin' && appState.settings) {
+                    document.getElementById('setting-brand-name').value = appState.settings.brandName || 'iMersGate';
+                    document.getElementById('setting-logo-url').value = appState.settings.logoUrl || '';
                     document.getElementById('setting-wa-provider').value = appState.settings.waProvider || 'fonnte';
                     document.getElementById('setting-wa-token').value = appState.settings.waToken || '';
                     document.getElementById('setting-wa-admin').value = appState.settings.waAdmin || '';
@@ -447,6 +477,27 @@
                     document.getElementById('error-message').innerText = err.message;
                 }
             }
+        }
+
+        function applyBranding(brandingData) {
+            const name = brandingData.brandName || 'iMersGate';
+            const logo = brandingData.logoUrl || '';
+            
+            // Text Elements
+            document.getElementById('doc-title').innerText = `${name} - Dashboard`;
+            document.getElementById('loading-brand-name').innerText = `Memuat ${name}...`;
+            document.getElementById('login-brand-name').innerText = `Masuk ke ${name}`;
+            document.getElementById('sidebar-brand-name').innerText = name;
+            
+            // Logo Elements
+            const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center bg-indigo-100 text-primary"><i data-lucide="layers" class="w-6 h-6"></i></div>`;
+            const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover bg-white">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
+            
+            document.getElementById('loading-logo').innerHTML = logoHtml;
+            document.getElementById('login-logo').innerHTML = logoHtml;
+            document.getElementById('sidebar-logo').innerHTML = sidebarLogoHtml;
+            
+            lucide.createIcons();
         }
 
         async function handleLogin(e) {
@@ -522,6 +573,8 @@
             btn.disabled = true;
 
             const payload = {
+                brandName: document.getElementById('setting-brand-name').value,
+                logoUrl: document.getElementById('setting-logo-url').value,
                 waProvider: document.getElementById('setting-wa-provider').value,
                 waToken: document.getElementById('setting-wa-token').value,
                 waAdmin: document.getElementById('setting-wa-admin').value
@@ -531,6 +584,14 @@
                 await callBackend('updateSettings', { adminId: appState.user.id, settings: payload });
                 showToast('Sukses', 'Pengaturan sistem berhasil disimpan.');
                 appState.settings = payload;
+                
+                // Simpan branding ke lokal dan terapkan langsung
+                localStorage.setItem('imersgate_branding', JSON.stringify({
+                    brandName: payload.brandName,
+                    logoUrl: payload.logoUrl
+                }));
+                applyBranding(payload);
+                
             } catch (err) {
                 showToast('Error', err.message, true);
             } finally {
@@ -550,7 +611,7 @@
             navMenu.appendChild(createNavItem('Dashboard', 'layout-dashboard', 'dashboard', true));
             if (appState.user.role === 'admin') {
                 navMenu.appendChild(createNavItem('Agencies', 'users', 'agencies', false));
-                navMenu.appendChild(createNavItem('Pengaturan', 'settings', 'settings', false)); // Tambah Menu Settings
+                navMenu.appendChild(createNavItem('Pengaturan', 'settings', 'settings', false));
                 document.getElementById('btn-add-product').classList.remove('hidden');
             }
             navMenu.appendChild(createNavItem('Akun Saya', 'user', 'account', false));
@@ -639,12 +700,10 @@
             lucide.createIcons();
         }
 
-        // Tampilkan Modal HTML Konten Produk
         function viewProductContent(productId) {
             const product = appState.products.find(p => p.id === productId);
             if(product) {
                 document.getElementById('view-product-title').innerHTML = `<i data-lucide="box" class="w-5 h-5 mr-2 text-primary"></i> ${product.name}`;
-                // Fallback teks jika belum ada konten (produk lama)
                 document.getElementById('view-product-content').innerHTML = product.accessContent || '<p class="text-gray-500 italic">Belum ada konten akses untuk produk ini.</p>';
                 openModal('modal-view-product');
                 lucide.createIcons();
@@ -746,7 +805,6 @@
             btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Saving...`;
             btn.disabled = true;
 
-            // Kumpulkan Data Field Produk Baru
             const payload = { 
                 name: document.getElementById('new-product-name').value,
                 imageUrl: document.getElementById('new-product-image').value,
