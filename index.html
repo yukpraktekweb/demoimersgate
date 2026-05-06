@@ -34,7 +34,6 @@
         .prose a { color: #FF6A00; text-decoration: underline; }
         .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;}
         
-        /* Ubah warna autofill browser */
         input:-webkit-autofill,
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
@@ -42,6 +41,9 @@
             -webkit-box-shadow: 0 0 0 30px #0B0B0B inset !important;
             -webkit-text-fill-color: #F5F5F5 !important;
         }
+
+        /* Checkbox styling */
+        .custom-checkbox { accent-color: #FF6A00; width: 1.1rem; height: 1.1rem; cursor: pointer; }
     </style>
 </head>
 <body class="bg-dark text-textMain font-sans antialiased h-screen overflow-hidden flex">
@@ -60,7 +62,7 @@
     <!-- LOADING VIEW -->
     <div id="loading-view" class="fixed inset-0 bg-dark z-50 flex flex-col items-center justify-center fade-in">
         <div class="bg-card border border-borderMain p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full">
-            <div id="loading-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-primary/10">
+            <div id="loading-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl">
                 <div class="w-12 h-12 flex items-center justify-center">
                     <i data-lucide="shield-check" class="w-8 h-8 text-primary"></i>
                 </div>
@@ -87,12 +89,13 @@
     <div id="login-view" class="hidden fixed inset-0 bg-dark z-40 flex flex-col items-center justify-center fade-in">
         <div class="bg-card p-8 rounded-2xl shadow-2xl w-full max-w-md border border-borderMain">
             <div class="flex flex-col items-center justify-center mb-6">
-                <div id="login-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-primary/10">
+                <div id="login-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-transparent">
                     <div class="w-full h-full flex items-center justify-center">
                         <i data-lucide="layers" class="w-8 h-8 text-primary"></i>
                     </div>
                 </div>
-                <h2 id="login-brand-name" class="text-2xl font-bold text-primary text-center">iMersGate</h2>
+                <!-- Teks sudah diubah sesuai permintaan -->
+                <h2 id="login-brand-name" class="text-2xl font-bold text-primary text-center">iMersGate Official</h2>
             </div>
             <p class="text-gray-400 text-sm text-center mb-8">Masuk ke akun Anda.</p>
             
@@ -119,7 +122,7 @@
     <div id="forgot-password-view" class="hidden fixed inset-0 bg-dark z-40 flex flex-col items-center justify-center fade-in">
         <div class="bg-card p-8 rounded-2xl shadow-2xl w-full max-w-md border border-borderMain">
             <div class="flex flex-col items-center justify-center mb-6">
-                <div id="forgot-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-primary/10">
+                <div id="forgot-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-transparent">
                     <div class="w-full h-full flex items-center justify-center">
                         <i data-lucide="key" class="w-8 h-8 text-primary"></i>
                     </div>
@@ -149,8 +152,8 @@
         <!-- SIDEBAR -->
         <aside class="w-64 bg-dark border-r border-borderMain flex flex-col transition-all duration-300 z-20 relative">
             <div class="h-16 flex items-center px-6 border-b border-borderMain bg-card/50">
-                <div id="sidebar-logo" class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-primary/30 overflow-hidden">
-                    <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+                <div id="sidebar-logo" class="w-8 h-8 bg-transparent flex items-center justify-center mr-3 overflow-hidden">
+                    <i data-lucide="layers" class="w-5 h-5 text-primary"></i>
                 </div>
                 <span id="sidebar-brand-name" class="text-lg font-extrabold tracking-wide truncate text-primary">iMersGate</span>
             </div>
@@ -192,7 +195,8 @@
                             <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Product
                         </button>
                     </div>
-                    <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    <!-- Proporsional Layout: 4 kolom di layar besar -->
+                    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
                 </div>
 
                 <!-- AGENCIES VIEW -->
@@ -202,7 +206,7 @@
                             <h3 class="text-lg font-bold text-textMain">Agency Management</h3>
                             <p class="text-sm text-gray-400">Kelola akun agency bawahan Anda dan atur akses produk mereka.</p>
                         </div>
-                        <button onclick="openModal('modal-create-agency')" class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-lg shadow-primary/20 transition-colors">
+                        <button onclick="openCreateAgencyModal()" class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-lg shadow-primary/20 transition-colors">
                             <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create Agency
                         </button>
                     </div>
@@ -345,56 +349,15 @@
         </div>
     </div>
 
-    <!-- Modal Kelola Akses Produk -->
-    <div id="modal-manage-access" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-manage-access')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
-            <div class="flex justify-between items-center p-6 border-b border-borderMain bg-[#1A1A1A]">
-                <h3 class="text-lg font-bold text-textMain">Kelola Akses Produk</h3>
-                <button onclick="closeModal('modal-manage-access')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <div class="p-6 overflow-y-auto">
-                <p class="text-sm text-gray-400 mb-4">Mengelola akses untuk: <strong id="manage-access-agency-name" class="text-primary"></strong></p>
-                
-                <input type="hidden" id="manage-access-agency-id">
-                
-                <!-- Tambah Akses Baru -->
-                <div class="flex space-x-2 mb-6">
-                    <select id="manage-access-product-select" class="flex-1 px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg text-sm focus:ring-2 focus:ring-primary outline-none">
-                        <option value="" disabled selected>Pilih produk untuk ditambahkan...</option>
-                        <!-- Injected via JS -->
-                    </select>
-                    <button id="btn-add-access" onclick="handleAddAccess()" class="px-4 py-2 bg-primary hover:bg-primaryHover text-white rounded-lg text-sm font-medium transition-colors flex items-center">
-                        <i data-lucide="plus" class="w-4 h-4 mr-1"></i> Tambah
-                    </button>
-                </div>
-
-                <hr class="border-borderMain mb-4">
-                
-                <!-- Daftar Akses Saat Ini -->
-                <h4 class="text-sm font-bold text-gray-300 mb-3">Produk yang Dimiliki:</h4>
-                <div class="border border-borderMain rounded-lg overflow-hidden">
-                    <ul id="manage-access-list" class="divide-y divide-borderMain max-h-48 overflow-y-auto bg-dark">
-                        <!-- Injected via JS -->
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Create Agency Modal -->
     <div id="modal-create-agency" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-create-agency')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
             <div class="flex justify-between items-center p-6 border-b border-borderMain">
                 <h3 class="text-lg font-bold text-textMain">Create New Agency</h3>
                 <button onclick="closeModal('modal-create-agency')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <form id="form-create-agency" class="p-6 space-y-4" onsubmit="handleCreateAgency(event)">
-                <div class="bg-primary/10 border border-primary/20 text-primary text-xs p-3 rounded-lg mb-4 flex items-start">
-                    <i data-lucide="info" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
-                    <span>This new agency will inherit a snapshot of <strong>all products</strong> currently assigned to you.</span>
-                </div>
+            <form id="form-create-agency" class="p-6 overflow-y-auto space-y-4" onsubmit="handleCreateAgency(event)">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-1">Agency Name</label>
                     <input type="text" id="agency-name" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
@@ -407,7 +370,17 @@
                     <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
                     <input type="text" id="agency-phone" required placeholder="e.g. 08123456789" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
-                <div class="pt-4 flex justify-end space-x-3">
+                
+                <!-- Pilihan Produk Terpadu -->
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Pilih Akses Produk</label>
+                    <div id="create-agency-products" class="max-h-40 overflow-y-auto space-y-2 bg-[#222] p-3 rounded-lg border border-borderMain">
+                        <!-- Checkboxes iniect via JS -->
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Pilih produk yang ingin diberikan kepada Agency baru ini.</p>
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3 border-t border-borderMain mt-2">
                     <button type="button" onclick="closeModal('modal-create-agency')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Cancel</button>
                     <button type="submit" id="btn-submit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Create & Notify</button>
                 </div>
@@ -415,15 +388,15 @@
         </div>
     </div>
 
-    <!-- Edit Agency Modal -->
+    <!-- Edit Agency & Access Modal -->
     <div id="modal-edit-agency" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-edit-agency')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
             <div class="flex justify-between items-center p-6 border-b border-borderMain">
-                <h3 class="text-lg font-bold text-textMain">Edit Profil Agency</h3>
+                <h3 class="text-lg font-bold text-textMain">Edit Profil & Akses Agency</h3>
                 <button onclick="closeModal('modal-edit-agency')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <form id="form-edit-agency" class="p-6 space-y-4" onsubmit="handleEditAgency(event)">
+            <form id="form-edit-agency" class="p-6 overflow-y-auto space-y-4" onsubmit="handleEditAgency(event)">
                 <input type="hidden" id="edit-agency-id">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-1">Agency Name</label>
@@ -437,7 +410,16 @@
                     <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
                     <input type="text" id="edit-agency-phone" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
-                <div class="pt-4 flex justify-end space-x-3">
+
+                <!-- Pilihan Produk Terpadu (Akses) -->
+                <div class="mt-4">
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Kelola Akses Produk</label>
+                    <div id="edit-agency-products" class="max-h-40 overflow-y-auto space-y-2 bg-[#222] p-3 rounded-lg border border-borderMain">
+                        <!-- Checkboxes iniect via JS -->
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3 border-t border-borderMain mt-2">
                     <button type="button" onclick="closeModal('modal-edit-agency')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Cancel</button>
                     <button type="submit" id="btn-submit-edit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Simpan Perubahan</button>
                 </div>
@@ -622,16 +604,15 @@
             }
         }
 
-        // Catatan: Pada kunjungan browser pertama kali (sebelum pernah login), sistem akan 
-        // menggunakan "iMersGate" sebagai nama default karena data belum tersimpan di localStorage.
-        // Setelah Anda login 1x, logo & nama akan terekam dan muncul secara dinamis di seluruh halaman (termasuk halaman login).
         function applyBranding(brandingData) {
             const name = brandingData.brandName || 'iMersGate';
             const logo = brandingData.logoUrl || '';
             
             document.getElementById('doc-title').innerText = `${name} - Dashboard`;
             document.getElementById('loading-brand-name').innerText = `Memuat ${name}...`;
-            document.getElementById('login-brand-name').innerText = `Official ${name}`;
+            
+            // Ubah teks login sesuai instruksi
+            document.getElementById('login-brand-name').innerText = `${name} Official`;
             
             const forgotEl = document.getElementById('forgot-brand-name');
             if(forgotEl) forgotEl.innerText = `Reset Password ${name}`;
@@ -647,7 +628,7 @@
                     el.innerHTML = logoHtml;
                     if(logo) {
                         el.classList.remove('bg-primary/10'); 
-                        el.classList.add('bg-transparent'); // Ensures transparent background
+                        el.classList.add('bg-transparent'); 
                     } else {
                         el.classList.add('bg-primary/10');
                         el.classList.remove('bg-transparent');
@@ -819,7 +800,7 @@
             const createBtnContainer = document.createElement('div');
             createBtnContainer.className = 'mt-6 px-4';
             createBtnContainer.innerHTML = `
-                <button onclick="openModal('modal-create-agency')" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
+                <button onclick="openCreateAgencyModal()" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
                     <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> New Agency
                 </button>
             `;
@@ -885,8 +866,7 @@
                         </div>
                         ` : ''}
 
-                        <!-- DIUBAH MENJADI KOTAK (aspect-square) -->
-                        <div class="aspect-square w-full bg-[#222] flex items-center justify-center overflow-hidden relative border-b border-borderMain">
+                        <div class="h-44 w-full bg-[#222] flex items-center justify-center overflow-hidden relative border-b border-borderMain">
                             ${p.imageUrl ? 
                               `<img src="${p.imageUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${p.name}">` : 
                               `<div class="w-full h-full bg-gradient-to-br from-borderMain to-[#111] flex items-center justify-center"><i data-lucide="box" class="w-16 h-16 text-gray-600 group-hover:scale-110 transition-transform"></i></div>`
@@ -941,10 +921,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
-                        <button onclick="openManageAccessModal('${a.id}', '${a.name.replace(/'/g, "\\'")}')" title="Kelola Akses Produk" class="text-primary hover:text-primaryHover bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors flex items-center">
-                            <i data-lucide="key" class="w-4 h-4 mr-1"></i> Akses
-                        </button>
-                        <button onclick="openEditAgencyModal('${a.id}')" title="Edit Profil Agency" class="text-gray-400 hover:text-primary bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors">
+                        <button onclick="openEditAgencyModal('${a.id}')" title="Edit Profil & Akses" class="text-gray-400 hover:text-primary bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors">
                             <i data-lucide="edit" class="w-4 h-4"></i>
                         </button>
                         <button onclick="confirmDeleteAgency('${a.id}')" title="Hapus Agency" class="text-red-500 hover:text-red-400 bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors">
@@ -964,7 +941,22 @@
             if(id === 'modal-add-product') document.getElementById('form-add-product').reset();
         }
 
-        // --- AGENCY CRUD ---
+        // --- AGENCY CRUD DENGAN ASSIGN PRODUK TERPADU ---
+
+        function openCreateAgencyModal() {
+            const container = document.getElementById('create-agency-products');
+            if(appState.allProducts.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-500">Anda tidak memiliki produk yang bisa dibagikan.</p>`;
+            } else {
+                container.innerHTML = appState.allProducts.map(p => `
+                    <label class="flex items-center space-x-3 p-2 hover:bg-dark rounded transition-colors cursor-pointer">
+                        <input type="checkbox" value="${p.id}" class="custom-checkbox rounded bg-dark border-borderMain">
+                        <span class="text-sm text-gray-300 flex-1">${p.name}</span>
+                    </label>
+                `).join('');
+            }
+            openModal('modal-create-agency');
+        }
 
         async function handleCreateAgency(e) {
             e.preventDefault();
@@ -972,10 +964,13 @@
             btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Creating...`;
             btn.disabled = true;
 
+            const selectedProducts = Array.from(document.querySelectorAll('#create-agency-products input:checked')).map(cb => cb.value);
+
             const payload = {
                 name: document.getElementById('agency-name').value,
                 email: document.getElementById('agency-email').value,
-                phone: document.getElementById('agency-phone').value
+                phone: document.getElementById('agency-phone').value,
+                productIds: selectedProducts
             };
 
             try {
@@ -994,10 +989,28 @@
         function openEditAgencyModal(id) {
             const agency = appState.agencies.find(a => a.id === id);
             if(!agency) return;
+            
             document.getElementById('edit-agency-id').value = agency.id;
             document.getElementById('edit-agency-name').value = agency.name;
             document.getElementById('edit-agency-email').value = agency.email;
             document.getElementById('edit-agency-phone').value = agency.phone;
+
+            const container = document.getElementById('edit-agency-products');
+            const agencyProdIds = agency.assignedProducts ? agency.assignedProducts.map(p => p.id) : [];
+
+            if(appState.allProducts.length === 0) {
+                container.innerHTML = `<p class="text-sm text-gray-500">Anda tidak memiliki produk yang bisa dibagikan.</p>`;
+            } else {
+                container.innerHTML = appState.allProducts.map(p => {
+                    const isChecked = agencyProdIds.includes(p.id) ? 'checked' : '';
+                    return `
+                    <label class="flex items-center space-x-3 p-2 hover:bg-dark rounded transition-colors cursor-pointer">
+                        <input type="checkbox" value="${p.id}" ${isChecked} class="custom-checkbox rounded bg-dark border-borderMain">
+                        <span class="text-sm text-gray-300 flex-1">${p.name}</span>
+                    </label>
+                `}).join('');
+            }
+
             openModal('modal-edit-agency');
         }
 
@@ -1008,15 +1021,18 @@
             btn.disabled = true;
 
             const id = document.getElementById('edit-agency-id').value;
+            const selectedProducts = Array.from(document.querySelectorAll('#edit-agency-products input:checked')).map(cb => cb.value);
+
             const payload = {
                 name: document.getElementById('edit-agency-name').value,
                 email: document.getElementById('edit-agency-email').value,
-                phone: document.getElementById('edit-agency-phone').value
+                phone: document.getElementById('edit-agency-phone').value,
+                productIds: selectedProducts
             };
 
             try {
                 await callBackend('updateAgency', { userId: appState.user.id, agencyId: id, agencyData: payload });
-                showToast('Sukses', 'Data Agency berhasil diperbarui.');
+                showToast('Sukses', 'Data Profil & Akses Agency berhasil diperbarui.');
                 closeModal('modal-edit-agency');
                 const data = await callBackend('getDashboardData', { userId: appState.user.id });
                 appState.agencies = data.agencies;
@@ -1034,91 +1050,6 @@
                     appState.agencies = data.agencies;
                     renderAgenciesTable();
                     renderDashboard();
-                } catch (err) { showToast('Error', err.message, true); }
-                finally { closeModal('modal-confirm'); }
-            });
-        }
-
-        // --- PRODUCT ACCESS MANAGEMENT ---
-
-        function openManageAccessModal(agencyId, agencyName) {
-            const agency = appState.agencies.find(a => a.id === agencyId);
-            if(!agency) return;
-
-            document.getElementById('manage-access-agency-id').value = agencyId;
-            document.getElementById('manage-access-agency-name').innerText = agencyName;
-            
-            const agencyProductIds = agency.assignedProducts ? agency.assignedProducts.map(p => p.id) : [];
-            const availableProducts = appState.allProducts.filter(p => !agencyProductIds.includes(p.id));
-
-            const select = document.getElementById('manage-access-product-select');
-            select.innerHTML = '<option value="" disabled selected>Pilih produk untuk ditambahkan...</option>' + 
-                availableProducts.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
-            
-            const listContainer = document.getElementById('manage-access-list');
-            if(agency.assignedProducts && agency.assignedProducts.length > 0) {
-                listContainer.innerHTML = agency.assignedProducts.map(p => `
-                    <li class="px-4 py-3 flex justify-between items-center bg-[#222] border-b border-borderMain">
-                        <div>
-                            <p class="text-sm font-medium text-textMain">${p.name}</p>
-                            <p class="text-xs text-gray-500 font-mono">${p.id}</p>
-                        </div>
-                        <button onclick="confirmRemoveAccess('${agencyId}', '${p.id}')" title="Cabut Akses" class="text-red-500 hover:text-red-400 hover:bg-[#333] p-1.5 rounded transition-colors">
-                            <i data-lucide="x-circle" class="w-4 h-4"></i>
-                        </button>
-                    </li>
-                `).join('');
-            } else {
-                listContainer.innerHTML = `<li class="px-4 py-6 text-center text-sm text-gray-500 bg-dark">Belum ada akses produk.</li>`;
-            }
-
-            lucide.createIcons();
-            openModal('modal-manage-access');
-        }
-
-        async function handleAddAccess() {
-            const agencyId = document.getElementById('manage-access-agency-id').value;
-            const select = document.getElementById('manage-access-product-select');
-            const productId = select.value;
-
-            if(!productId) {
-                showToast('Peringatan', 'Silakan pilih produk terlebih dahulu.', true);
-                return;
-            }
-
-            const btn = document.getElementById('btn-add-access');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = `<div class="loader w-4 h-4 border-2 border-primary border-t-white"></div>`;
-            btn.disabled = true;
-
-            try {
-                await callBackend('assignProductToAgency', { userId: appState.user.id, agencyId, productId });
-                showToast('Success', 'Produk berhasil ditambahkan ke Agency.');
-                
-                const data = await callBackend('getDashboardData', { userId: appState.user.id });
-                appState.agencies = data.agencies;
-                renderAgenciesTable();
-                
-                const agency = appState.agencies.find(a => a.id === agencyId);
-                openManageAccessModal(agencyId, agency.name);
-                
-            } catch (err) { showToast('Error', err.message, true); } 
-            finally { btn.innerHTML = originalText; btn.disabled = false; }
-        }
-
-        function confirmRemoveAccess(agencyId, productId) {
-            showConfirm("Cabut Akses Produk?", "Agency ini tidak akan bisa lagi mengakses konten produk ini.", async () => {
-                try {
-                    await callBackend('removeProductFromAgency', { userId: appState.user.id, agencyId, productId });
-                    showToast('Sukses', 'Akses produk berhasil dicabut.');
-                    
-                    const data = await callBackend('getDashboardData', { userId: appState.user.id });
-                    appState.agencies = data.agencies;
-                    renderAgenciesTable();
-                    
-                    const agency = appState.agencies.find(a => a.id === agencyId);
-                    openManageAccessModal(agencyId, agency.name);
-
                 } catch (err) { showToast('Error', err.message, true); }
                 finally { closeModal('modal-confirm'); }
             });
