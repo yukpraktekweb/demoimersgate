@@ -247,6 +247,11 @@
                                         <label class="block text-sm font-medium text-gray-300 mb-1">URL Logo (Opsional)</label>
                                         <input type="url" id="setting-logo-url" placeholder="https://domain.com/logo.png" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">URL Aplikasi / Domain</label>
+                                        <input type="url" id="setting-app-url" placeholder="https://demoimersgate.vercel.app" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <p class="text-xs text-gray-500 mt-1">Digunakan untuk membuat tombol "Login Sekarang" di email.</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -270,6 +275,40 @@
                                     <div>
                                         <label class="block text-sm font-medium text-gray-300 mb-1">Admin Sender Number <span class="text-xs text-gray-500 font-normal">(Wajib jika pakai Xsender)</span></label>
                                         <input type="text" id="setting-wa-admin" placeholder="081234567890" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pengaturan Template Email -->
+                            <div class="bg-[#222] border border-borderMain rounded-lg p-4">
+                                <h4 class="text-sm font-bold text-gray-200 mb-4 flex items-center">
+                                    <i data-lucide="mail" class="w-4 h-4 mr-2 text-primary"></i> Pengaturan Template Email
+                                </h4>
+                                <div class="bg-primary/10 border border-primary/20 text-primary text-xs p-3 rounded-lg mb-4">
+                                    <p class="font-bold mb-1">Variabel Dinamis yang bisa digunakan:</p>
+                                    <code class="text-gray-300">{nama}</code> = Nama Agency/User <br>
+                                    <code class="text-gray-300">{email}</code> = Email User <br>
+                                    <code class="text-gray-300">{password}</code> = Password Akun <br>
+                                    <code class="text-gray-300">{produk}</code> = Daftar Produk (Otomatis list HTML) <br>
+                                    <code class="text-gray-300">{login_btn}</code> = Tombol Login otomatis
+                                </div>
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Warna/Gradient Header Email</label>
+                                        <input type="text" id="setting-email-bg" placeholder="linear-gradient(135deg, #FF6A00 0%, #cc5500 100%)" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm">
+                                        <p class="text-xs text-gray-500 mt-1">Bisa format Hex (#FF6A00) atau CSS linear-gradient.</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Template Agency Baru</label>
+                                        <textarea id="setting-tpl-agency" rows="4" placeholder="Kosongkan untuk pakai template default bawaan sistem..." class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Template Produk Baru</label>
+                                        <textarea id="setting-tpl-product" rows="4" placeholder="Kosongkan untuk pakai template default bawaan sistem..." class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Template Reset Password</label>
+                                        <textarea id="setting-tpl-reset" rows="4" placeholder="Kosongkan untuk pakai template default bawaan sistem..." class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -325,8 +364,6 @@
                         </form>
                     </div>
                 </div>
-
-                <!-- Dynamic Content Area akan disuntikkan ke sini melalui Javascript -->
 
             </div>
         </main>
@@ -512,7 +549,7 @@
     <!-- FRONTEND LOGIC -->
     <script>
         // ========================================================
-        // URL WEB APP APPS SCRIPT ANDA
+        // URL WEB APP APPS SCRIPT ANDA DI BAWAH INI
         // PASTIKAN MENGGUNAKAN URL DARI "NEW DEPLOYMENT"
         // ========================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUorKzQCLp7qoZM9xilpvcwoUmyN7nxH08_w4V9xjgz_uiMuBovOd1YBxtUSpskX-k/exec'; 
@@ -570,7 +607,8 @@
                 if (appState.settings) {
                     localStorage.setItem('imersgate_branding', JSON.stringify({
                         brandName: appState.settings.brandName,
-                        logoUrl: appState.settings.logoUrl
+                        logoUrl: appState.settings.logoUrl,
+                        appUrl: appState.settings.appUrl
                     }));
                     applyBranding(appState.settings);
                 }
@@ -587,9 +625,15 @@
                 if (appState.user.role === 'admin' && appState.settings) {
                     document.getElementById('setting-brand-name').value = appState.settings.brandName || 'iMersGate';
                     document.getElementById('setting-logo-url').value = appState.settings.logoUrl || '';
+                    document.getElementById('setting-app-url').value = appState.settings.appUrl || '';
                     document.getElementById('setting-wa-provider').value = appState.settings.waProvider || 'fonnte';
                     document.getElementById('setting-wa-token').value = appState.settings.waToken || '';
                     document.getElementById('setting-wa-admin').value = appState.settings.waAdmin || '';
+                    
+                    document.getElementById('setting-email-bg').value = appState.settings.emailHeaderBg || '';
+                    document.getElementById('setting-tpl-agency').value = appState.settings.emailTplAgency || '';
+                    document.getElementById('setting-tpl-product').value = appState.settings.emailTplProduct || '';
+                    document.getElementById('setting-tpl-reset').value = appState.settings.emailTplReset || '';
                 }
 
             } catch (err) {
@@ -767,16 +811,25 @@
             const payload = {
                 brandName: document.getElementById('setting-brand-name').value,
                 logoUrl: document.getElementById('setting-logo-url').value,
+                appUrl: document.getElementById('setting-app-url').value,
                 waProvider: document.getElementById('setting-wa-provider').value,
                 waToken: document.getElementById('setting-wa-token').value,
-                waAdmin: document.getElementById('setting-wa-admin').value
+                waAdmin: document.getElementById('setting-wa-admin').value,
+                emailHeaderBg: document.getElementById('setting-email-bg').value,
+                emailTplAgency: document.getElementById('setting-tpl-agency').value,
+                emailTplProduct: document.getElementById('setting-tpl-product').value,
+                emailTplReset: document.getElementById('setting-tpl-reset').value
             };
 
             try {
                 await callBackend('updateSettings', { adminId: appState.user.id, settings: payload });
                 showToast('Sukses', 'Pengaturan sistem berhasil disimpan.');
                 appState.settings = payload;
-                localStorage.setItem('imersgate_branding', JSON.stringify({ brandName: payload.brandName, logoUrl: payload.logoUrl }));
+                localStorage.setItem('imersgate_branding', JSON.stringify({ 
+                    brandName: payload.brandName, 
+                    logoUrl: payload.logoUrl,
+                    appUrl: payload.appUrl 
+                }));
                 applyBranding(payload);
             } catch (err) { showToast('Error', err.message, true); } 
             finally { btn.innerHTML = originalText; btn.disabled = false; }
@@ -798,10 +851,9 @@
             // Render Dynamic Menus
             document.querySelectorAll('.view-section.dynamic-view').forEach(el => el.remove());
             appState.dynamicMenus.forEach(menu => {
-                const iconName = menu.icon || 'file-text'; // default icon if none provided
+                const iconName = menu.icon || 'file-text'; 
                 navMenu.appendChild(createNavItem(menu.menu_name, iconName, `dyn-${menu.id}`, false));
 
-                // Inject Dynamic View Container
                 const viewDiv = document.createElement('div');
                 viewDiv.id = `view-dyn-${menu.id}`;
                 viewDiv.className = 'view-section dynamic-view hidden fade-in';
