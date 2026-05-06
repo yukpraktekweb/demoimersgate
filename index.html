@@ -156,7 +156,7 @@
                 </div>
                 <span id="sidebar-brand-name" class="text-lg font-extrabold tracking-wide truncate text-primary">iMersGate</span>
             </div>
-            <nav class="flex-1 py-6 px-3 space-y-1" id="nav-menu"></nav>
+            <nav class="flex-1 py-6 px-3 space-y-1 overflow-y-auto" id="nav-menu"></nav>
             <div class="p-4 border-t border-borderMain flex flex-col space-y-4 bg-card/50">
                 <button onclick="logout()" class="w-full flex items-center px-4 py-2 text-sm font-medium text-red-500 hover:text-red-400 hover:bg-borderMain rounded-lg transition-colors">
                     <i data-lucide="log-out" class="w-4 h-4 mr-3"></i> Keluar (Logout)
@@ -325,6 +325,8 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Dynamic Content Area akan disuntikkan ke sini melalui Javascript -->
 
             </div>
         </main>
@@ -515,7 +517,7 @@
         // ========================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUorKzQCLp7qoZM9xilpvcwoUmyN7nxH08_w4V9xjgz_uiMuBovOd1YBxtUSpskX-k/exec'; 
 
-        let appState = { user: null, products: [], agencies: [], allProducts: [], settings: {} };
+        let appState = { user: null, products: [], agencies: [], allProducts: [], settings: {}, dynamicMenus: [] };
         let confirmActionCallback = null;
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -557,6 +559,7 @@
                 appState.products = data.products || [];
                 appState.agencies = data.agencies || [];
                 appState.settings = data.settings || {}; 
+                appState.dynamicMenus = data.dynamicMenus || [];
                 
                 if(appState.user.role === 'admin') {
                     appState.allProducts = data.products;
@@ -787,8 +790,30 @@
 
             const navMenu = document.getElementById('nav-menu');
             navMenu.innerHTML = '';
+            
+            // Core Menus
             navMenu.appendChild(createNavItem('Dashboard', 'layout-dashboard', 'dashboard', true));
             navMenu.appendChild(createNavItem('Agencies', 'users', 'agencies', false)); 
+
+            // Render Dynamic Menus
+            document.querySelectorAll('.view-section.dynamic-view').forEach(el => el.remove());
+            appState.dynamicMenus.forEach(menu => {
+                const iconName = menu.icon || 'file-text'; // default icon if none provided
+                navMenu.appendChild(createNavItem(menu.menu_name, iconName, `dyn-${menu.id}`, false));
+
+                // Inject Dynamic View Container
+                const viewDiv = document.createElement('div');
+                viewDiv.id = `view-dyn-${menu.id}`;
+                viewDiv.className = 'view-section dynamic-view hidden fade-in';
+                viewDiv.innerHTML = `
+                    <div class="bg-card border border-borderMain p-8 rounded-xl shadow-lg">
+                        <div class="prose max-w-none text-gray-300 leading-relaxed">
+                            ${menu.html_content || '<p class="text-gray-500 italic">Belum ada konten.</p>'}
+                        </div>
+                    </div>
+                `;
+                document.getElementById('content-area').appendChild(viewDiv);
+            });
             
             if (appState.user.role === 'admin') {
                 navMenu.appendChild(createNavItem('Pengaturan', 'settings', 'settings', false));
@@ -826,8 +851,20 @@
 
         function switchView(viewId) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`view-${viewId}`).classList.remove('hidden');
-            document.getElementById('page-title').innerText = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            
+            const targetView = document.getElementById(`view-${viewId}`);
+            if(targetView) targetView.classList.remove('hidden');
+
+            let title = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            if(viewId.startsWith('dyn-')) {
+                const menuId = viewId.replace('dyn-', '');
+                const menuObj = appState.dynamicMenus.find(m => String(m.id) === String(menuId));
+                if(menuObj) title = menuObj.menu_name;
+            } else if (viewId === 'dashboard') {
+                title = 'Dashboard';
+            }
+
+            document.getElementById('page-title').innerText = title;
         }
 
         function renderDashboard() {
