@@ -272,6 +272,23 @@
     </div>
 
     <!-- MODALS -->
+    
+    <!-- Confirm Modal (Hapus) -->
+    <div id="modal-confirm" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('modal-confirm')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-2xl shadow-2xl flex flex-col fade-in p-6 text-center">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2" id="confirm-title">Konfirmasi</h3>
+            <p class="text-gray-500 text-sm mb-6" id="confirm-message">Apakah Anda yakin ingin menghapus data ini?</p>
+            <div class="flex justify-center space-x-3">
+                <button type="button" onclick="closeModal('modal-confirm')" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg w-full">Batal</button>
+                <button type="button" id="btn-confirm-action" onclick="executeConfirm()" class="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg w-full flex justify-center items-center">Hapus</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Create Agency Modal -->
     <div id="modal-create-agency" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-create-agency')"></div>
@@ -300,6 +317,36 @@
                 <div class="pt-4 flex justify-end space-x-3">
                     <button type="button" onclick="closeModal('modal-create-agency')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
                     <button type="submit" id="btn-submit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg">Create & Notify</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Agency Modal (Admin Only) -->
+    <div id="modal-edit-agency" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-edit-agency')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900">Edit Agency</h3>
+                <button onclick="closeModal('modal-edit-agency')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-edit-agency" class="p-6 space-y-4" onsubmit="handleEditAgency(event)">
+                <input type="hidden" id="edit-agency-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Agency Name</label>
+                    <input type="text" id="edit-agency-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <input type="email" id="edit-agency-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
+                    <input type="text" id="edit-agency-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('modal-edit-agency')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
+                    <button type="submit" id="btn-submit-edit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -361,6 +408,36 @@
         </div>
     </div>
 
+    <!-- Edit Product Modal -->
+    <div id="modal-edit-product" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-edit-product')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-gray-100">
+                <h3 class="text-lg font-bold text-gray-900">Edit Produk</h3>
+                <button onclick="closeModal('modal-edit-product')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form id="form-edit-product" class="p-6 space-y-4" onsubmit="handleEditProduct(event)">
+                <input type="hidden" id="edit-product-id">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
+                    <input type="text" id="edit-product-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">URL Gambar Cover</label>
+                    <input type="url" id="edit-product-image" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Konten Akses (HTML)</label>
+                    <textarea id="edit-product-content" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm"></textarea>
+                </div>
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal('modal-edit-product')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Batal</button>
+                    <button type="submit" id="btn-submit-edit-product" class="px-4 py-2 text-sm font-medium bg-dark hover:bg-gray-800 text-white rounded-lg">Update Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- View Product Content Modal -->
     <div id="modal-view-product" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('modal-view-product')"></div>
@@ -390,13 +467,11 @@
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUorKzQCLp7qoZM9xilpvcwoUmyN7nxH08_w4V9xjgz_uiMuBovOd1YBxtUSpskX-k/exec'; 
 
         let appState = { user: null, products: [], agencies: [], allProducts: [], settings: {} };
+        let confirmActionCallback = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            
-            // Muat branding lokal terlebih dahulu untuk transisi UI yang halus
             applyBranding(JSON.parse(localStorage.getItem('imersgate_branding') || '{}'));
-            
             fetchInitialData();
         });
 
@@ -436,7 +511,6 @@
                 
                 if(appState.user.role === 'admin') appState.allProducts = data.products;
                 
-                // Terapkan dan simpan setting branding ke lokal
                 if (appState.settings) {
                     localStorage.setItem('imersgate_branding', JSON.stringify({
                         brandName: appState.settings.brandName,
@@ -450,12 +524,10 @@
                 document.getElementById('loading-view').classList.add('hidden');
                 document.getElementById('app-view').classList.remove('hidden');
 
-                // Isi Form Profil
                 document.getElementById('profile-name').value = appState.user.name || '';
                 document.getElementById('profile-email').value = appState.user.email || '';
                 document.getElementById('profile-phone').value = appState.user.phone || '';
 
-                // Isi Form Setting (Hanya Admin)
                 if (appState.user.role === 'admin' && appState.settings) {
                     document.getElementById('setting-brand-name').value = appState.settings.brandName || 'iMersGate';
                     document.getElementById('setting-logo-url').value = appState.settings.logoUrl || '';
@@ -466,11 +538,11 @@
 
             } catch (err) {
                 document.getElementById('loading-view').classList.add('hidden');
-                if (err.message === "UNAUTHORIZED_ACCESS" || err.message.includes("tidak ditemukan") || err.message.includes("Failed to fetch")) {
+                if (err.message === "UNAUTHORIZED_ACCESS" || err.message.includes("tidak ditemukan") || err.message.includes("Failed to fetch") || err.message.includes("Unexpected token")) {
                     localStorage.removeItem('imersgate_user');
                     document.getElementById('login-view').classList.remove('hidden');
-                    if(err.message.includes("Failed to fetch")) {
-                        showToast('Error', 'Gagal menyambung ke server. Pastikan URL Apps Script sudah benar.', true);
+                    if(err.message.includes("fetch") || err.message.includes("token")) {
+                        showToast('Error', 'Gagal memuat. Pastikan Anda sudah "New Deployment" pada Apps Script.', true);
                     }
                 } else {
                     document.getElementById('error-view').classList.remove('hidden');
@@ -483,13 +555,11 @@
             const name = brandingData.brandName || 'iMersGate';
             const logo = brandingData.logoUrl || '';
             
-            // Text Elements
             document.getElementById('doc-title').innerText = `${name} - Dashboard`;
             document.getElementById('loading-brand-name').innerText = `Memuat ${name}...`;
             document.getElementById('login-brand-name').innerText = `Masuk ke ${name}`;
             document.getElementById('sidebar-brand-name').innerText = name;
             
-            // Logo Elements
             const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center bg-indigo-100 text-primary"><i data-lucide="layers" class="w-6 h-6"></i></div>`;
             const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover bg-white">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
             
@@ -498,6 +568,20 @@
             document.getElementById('sidebar-logo').innerHTML = sidebarLogoHtml;
             
             lucide.createIcons();
+        }
+
+        function showConfirm(title, message, callback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-message').innerText = message;
+            confirmActionCallback = callback;
+            openModal('modal-confirm');
+        }
+
+        function executeConfirm() {
+            const btn = document.getElementById('btn-confirm-action');
+            btn.innerHTML = `<div class="loader w-4 h-4 mr-2 border-2"></div> Memproses...`;
+            btn.disabled = true;
+            if(confirmActionCallback) confirmActionCallback();
         }
 
         async function handleLogin(e) {
@@ -512,7 +596,6 @@
             try {
                 const user = await callBackend('loginUser', { email, password });
                 localStorage.setItem('imersgate_user', JSON.stringify(user));
-                
                 document.getElementById('login-view').classList.add('hidden');
                 document.getElementById('loading-view').classList.remove('hidden');
                 await fetchInitialData();
@@ -551,18 +634,13 @@
             try {
                 await callBackend('updateUserProfile', { userId: appState.user.id, currentPassword: oldPass, newPassword: newPass, newName, newPhone });
                 showToast('Sukses', 'Profil berhasil diperbarui.');
-                
                 appState.user.name = newName;
                 document.getElementById('user-name').innerText = newName;
                 document.getElementById('user-avatar').innerText = newName.charAt(0).toUpperCase();
                 document.getElementById('profile-old-password').value = '';
                 document.getElementById('profile-new-password').value = '';
-            } catch (err) {
-                showToast('Error', err.message, true);
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+            } catch (err) { showToast('Error', err.message, true); } 
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
         }
 
         async function handleSaveSettings(e) {
@@ -584,20 +662,10 @@
                 await callBackend('updateSettings', { adminId: appState.user.id, settings: payload });
                 showToast('Sukses', 'Pengaturan sistem berhasil disimpan.');
                 appState.settings = payload;
-                
-                // Simpan branding ke lokal dan terapkan langsung
-                localStorage.setItem('imersgate_branding', JSON.stringify({
-                    brandName: payload.brandName,
-                    logoUrl: payload.logoUrl
-                }));
+                localStorage.setItem('imersgate_branding', JSON.stringify({ brandName: payload.brandName, logoUrl: payload.logoUrl }));
                 applyBranding(payload);
-                
-            } catch (err) {
-                showToast('Error', err.message, true);
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+            } catch (err) { showToast('Error', err.message, true); } 
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
         }
 
         function buildUI() {
@@ -678,7 +746,15 @@
                     </div>`;
             } else {
                 grid.innerHTML = appState.products.map(p => `
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col h-full">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col h-full relative">
+                        <!-- Admin Edit/Delete Actions overlay -->
+                        ${appState.user.role === 'admin' ? `
+                        <div class="absolute top-2 right-2 z-10 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onclick="openEditProductModal('${p.id}')" title="Edit Produk" class="p-1.5 bg-white/90 rounded text-gray-700 hover:text-primary shadow-sm"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                            <button onclick="confirmDeleteProduct('${p.id}')" title="Hapus Produk" class="p-1.5 bg-white/90 rounded text-red-600 hover:text-red-800 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                        ` : ''}
+
                         <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden relative">
                             ${p.imageUrl ? 
                               `<img src="${p.imageUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${p.name}">` : 
@@ -729,10 +805,18 @@
                         <div class="text-sm text-gray-500 flex items-center mt-1"><i data-lucide="phone" class="w-3 h-3 mr-1 text-gray-400"></i> ${a.phone}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono text-xs">${a.created_by}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button onclick="openAssignModal('${a.id}', '${a.name.replace(/'/g, "\\'")}')" class="text-primary hover:text-primaryHover bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-md transition-colors inline-flex items-center">
-                            <i data-lucide="plus-square" class="w-4 h-4 mr-1"></i> Assign Product
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
+                        <button onclick="openAssignModal('${a.id}', '${a.name.replace(/'/g, "\\'")}')" title="Assign Produk" class="text-primary hover:text-primaryHover bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors">
+                            <i data-lucide="plus-square" class="w-4 h-4"></i>
                         </button>
+                        ${appState.user.role === 'admin' ? `
+                        <button onclick="openEditAgencyModal('${a.id}')" title="Edit Agency" class="text-gray-500 hover:text-primary bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="confirmDeleteAgency('${a.id}')" title="Hapus Agency" class="text-gray-500 hover:text-red-600 bg-gray-50 hover:bg-red-50 p-2 rounded-md transition-colors">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                        ` : ''}
                     </td>
                 </tr>`).join('');
             lucide.createIcons();
@@ -741,9 +825,13 @@
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) { 
             document.getElementById(id).classList.add('hidden'); 
+            const btn = document.getElementById('btn-confirm-action');
+            if(btn) { btn.innerHTML = `Hapus`; btn.disabled = false; }
             if(id === 'modal-create-agency') document.getElementById('form-create-agency').reset();
             if(id === 'modal-add-product') document.getElementById('form-add-product').reset();
         }
+
+        // --- AGENCY CRUD ---
 
         async function handleCreateAgency(e) {
             e.preventDefault();
@@ -770,6 +858,56 @@
             } catch (err) { showToast('Error', err.message, true); } 
             finally { btn.innerHTML = `Create & Notify`; btn.disabled = false; }
         }
+
+        function openEditAgencyModal(id) {
+            const agency = appState.agencies.find(a => a.id === id);
+            if(!agency) return;
+            document.getElementById('edit-agency-id').value = agency.id;
+            document.getElementById('edit-agency-name').value = agency.name;
+            document.getElementById('edit-agency-email').value = agency.email;
+            document.getElementById('edit-agency-phone').value = agency.phone;
+            openModal('modal-edit-agency');
+        }
+
+        async function handleEditAgency(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-edit-agency');
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Menyimpan...`;
+            btn.disabled = true;
+
+            const id = document.getElementById('edit-agency-id').value;
+            const payload = {
+                name: document.getElementById('edit-agency-name').value,
+                email: document.getElementById('edit-agency-email').value,
+                phone: document.getElementById('edit-agency-phone').value
+            };
+
+            try {
+                await callBackend('updateAgency', { adminId: appState.user.id, agencyId: id, agencyData: payload });
+                showToast('Sukses', 'Data Agency berhasil diperbarui.');
+                closeModal('modal-edit-agency');
+                const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                appState.agencies = data.agencies;
+                renderAgenciesTable();
+            } catch (err) { showToast('Error', err.message, true); } 
+            finally { btn.innerHTML = `Simpan Perubahan`; btn.disabled = false; }
+        }
+
+        function confirmDeleteAgency(id) {
+            showConfirm("Hapus Agency?", "Agency beserta akses produknya akan dihapus permanen. Aksi ini tidak dapat dibatalkan.", async () => {
+                try {
+                    await callBackend('deleteAgency', { adminId: appState.user.id, agencyId: id });
+                    showToast('Sukses', 'Agency berhasil dihapus.');
+                    const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                    appState.agencies = data.agencies;
+                    renderAgenciesTable();
+                    renderDashboard();
+                } catch (err) { showToast('Error', err.message, true); }
+                finally { closeModal('modal-confirm'); }
+            });
+        }
+
+        // --- PRODUCT ASSIGNMENT ---
 
         function openAssignModal(agencyId, agencyName) {
             document.getElementById('assign-agency-id').value = agencyId;
@@ -799,6 +937,8 @@
             finally { btn.innerHTML = `Assign Product`; btn.disabled = false; }
         }
 
+        // --- PRODUCT CRUD ---
+
         async function handleAddProduct(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-new-product');
@@ -822,6 +962,56 @@
                 renderDashboard();
             } catch (err) { showToast('Error', err.message, true); } 
             finally { btn.innerHTML = `Simpan Produk`; btn.disabled = false; }
+        }
+
+        function openEditProductModal(id) {
+            const product = appState.allProducts.find(p => p.id === id);
+            if(!product) return;
+            document.getElementById('edit-product-id').value = product.id;
+            document.getElementById('edit-product-name').value = product.name;
+            document.getElementById('edit-product-image').value = product.imageUrl || '';
+            document.getElementById('edit-product-content').value = product.accessContent || '';
+            openModal('modal-edit-product');
+        }
+
+        async function handleEditProduct(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit-edit-product');
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Updating...`;
+            btn.disabled = true;
+
+            const id = document.getElementById('edit-product-id').value;
+            const payload = { 
+                name: document.getElementById('edit-product-name').value,
+                imageUrl: document.getElementById('edit-product-image').value,
+                accessContent: document.getElementById('edit-product-content').value 
+            };
+
+            try {
+                await callBackend('updateProduct', { adminId: appState.user.id, productId: id, productData: payload });
+                showToast('Success', 'Produk berhasil diupdate.');
+                closeModal('modal-edit-product');
+                
+                const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                appState.products = data.products;
+                appState.allProducts = data.products;
+                renderDashboard();
+            } catch (err) { showToast('Error', err.message, true); } 
+            finally { btn.innerHTML = `Update Produk`; btn.disabled = false; }
+        }
+
+        function confirmDeleteProduct(id) {
+            showConfirm("Hapus Produk?", "Produk ini akan dihapus permanen. Seluruh Agency akan kehilangan akses ke produk ini.", async () => {
+                try {
+                    await callBackend('deleteProduct', { adminId: appState.user.id, productId: id });
+                    showToast('Sukses', 'Produk berhasil dihapus.');
+                    const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                    appState.products = data.products;
+                    appState.allProducts = data.products;
+                    renderDashboard();
+                } catch (err) { showToast('Error', err.message, true); }
+                finally { closeModal('modal-confirm'); }
+            });
         }
 
         function showToast(title, message, isError = false) {
