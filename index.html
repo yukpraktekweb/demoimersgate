@@ -65,7 +65,7 @@
                     <i data-lucide="shield-check" class="w-8 h-8 text-primary"></i>
                 </div>
             </div>
-            <h1 id="loading-brand-name" class="text-2xl font-bold text-textMain mb-2">Memuat Sistem...</h1>
+            <h1 id="loading-brand-name" class="text-2xl font-bold text-primary mb-2">Memuat Sistem...</h1>
             <p class="text-gray-400 text-sm mb-6 text-center">Menghubungkan ke server...</p>
             <div class="loader"></div>
         </div>
@@ -92,18 +92,18 @@
                         <i data-lucide="layers" class="w-8 h-8 text-primary"></i>
                     </div>
                 </div>
-                <h2 id="login-brand-name" class="text-2xl font-bold text-textMain text-center">Masuk ke iMersGate</h2>
+                <h2 id="login-brand-name" class="text-2xl font-bold text-primary text-center">Masuk ke iMersGate</h2>
             </div>
             <p class="text-gray-400 text-sm text-center mb-8">Masuk ke akun Anda.</p>
             
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <label class="block text-sm font-medium text-primary mb-1">Email</label>
                     <input type="email" id="login-email" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder-gray-600">
                 </div>
                 <div>
                     <div class="flex justify-between items-center mb-1">
-                        <label class="block text-sm font-medium text-gray-300">Password</label>
+                        <label class="block text-sm font-medium text-primary">Password</label>
                         <a href="#" onclick="showForgotPassword()" class="text-xs text-primary hover:text-primaryHover transition-colors">Lupa Password?</a>
                     </div>
                     <input type="password" id="login-password" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder-gray-600">
@@ -124,13 +124,13 @@
                         <i data-lucide="key" class="w-8 h-8 text-primary"></i>
                     </div>
                 </div>
-                <h2 id="forgot-brand-name" class="text-2xl font-bold text-textMain text-center">Reset Password</h2>
+                <h2 id="forgot-brand-name" class="text-2xl font-bold text-primary text-center">Reset Password</h2>
             </div>
             <p class="text-gray-400 text-sm text-center mb-8">Masukkan email terdaftar Anda. Password baru akan dikirimkan ke Email dan WhatsApp Anda.</p>
             
             <form id="form-forgot-password" onsubmit="handleForgotPassword(event)" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-1">Email Anda</label>
+                    <label class="block text-sm font-medium text-primary mb-1">Email Anda</label>
                     <input type="email" id="forgot-email" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder-gray-600">
                 </div>
                 <button type="submit" id="btn-submit-forgot" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
@@ -152,7 +152,7 @@
                 <div id="sidebar-logo" class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-primary/30 overflow-hidden">
                     <i data-lucide="layers" class="w-5 h-5 text-white"></i>
                 </div>
-                <span id="sidebar-brand-name" class="text-lg font-bold tracking-wide truncate text-textMain">iMersGate</span>
+                <span id="sidebar-brand-name" class="text-lg font-extrabold tracking-wide truncate text-primary">iMersGate</span>
             </div>
             <nav class="flex-1 py-6 px-3 space-y-1" id="nav-menu"></nav>
             <div class="p-4 border-t border-borderMain flex flex-col space-y-4 bg-card/50">
@@ -638,18 +638,35 @@
             
             document.getElementById('sidebar-brand-name').innerText = name;
             
-            const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-primary"><i data-lucide="layers" class="w-8 h-8"></i></div>`;
-            const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover bg-card">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
+            const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-contain p-1">` : `<div class="w-full h-full flex items-center justify-center text-primary"><i data-lucide="layers" class="w-8 h-8"></i></div>`;
+            const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-contain">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
             
             ['loading-logo', 'login-logo', 'forgot-logo'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) {
                     el.innerHTML = logoHtml;
-                    if(logo) el.classList.remove('bg-primary/10'); // Hapus background coklat transparan agar logo rapi
+                    if(logo) {
+                        el.classList.remove('bg-primary/10'); 
+                        el.classList.add('bg-transparent'); // Ensures transparent background
+                    } else {
+                        el.classList.add('bg-primary/10');
+                        el.classList.remove('bg-transparent');
+                    }
                 }
             });
 
-            document.getElementById('sidebar-logo').innerHTML = sidebarLogoHtml;
+            const sidebarLogoEl = document.getElementById('sidebar-logo');
+            if(sidebarLogoEl) {
+                sidebarLogoEl.innerHTML = sidebarLogoHtml;
+                if(logo) {
+                    sidebarLogoEl.classList.remove('bg-primary', 'shadow-lg', 'shadow-primary/30');
+                    sidebarLogoEl.classList.add('bg-transparent');
+                } else {
+                    sidebarLogoEl.classList.add('bg-primary', 'shadow-lg', 'shadow-primary/30');
+                    sidebarLogoEl.classList.remove('bg-transparent');
+                }
+            }
+
             lucide.createIcons();
         }
 
