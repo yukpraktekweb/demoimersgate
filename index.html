@@ -62,7 +62,7 @@
     <!-- LOADING VIEW -->
     <div id="loading-view" class="fixed inset-0 bg-dark z-50 flex flex-col items-center justify-center fade-in">
         <div class="bg-card border border-borderMain p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full">
-            <div id="loading-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl">
+            <div id="loading-logo" class="w-20 h-20 mb-4 flex items-center justify-center overflow-hidden rounded-xl bg-transparent">
                 <div class="w-12 h-12 flex items-center justify-center">
                     <i data-lucide="shield-check" class="w-8 h-8 text-primary"></i>
                 </div>
@@ -94,7 +94,6 @@
                         <i data-lucide="layers" class="w-8 h-8 text-primary"></i>
                     </div>
                 </div>
-                <!-- Teks sudah diubah sesuai permintaan -->
                 <h2 id="login-brand-name" class="text-2xl font-bold text-primary text-center">iMersGate Official</h2>
             </div>
             <p class="text-gray-400 text-sm text-center mb-8">Masuk ke akun Anda.</p>
@@ -512,6 +511,7 @@
     <script>
         // ========================================================
         // URL WEB APP APPS SCRIPT ANDA
+        // PASTIKAN MENGGUNAKAN URL DARI "NEW DEPLOYMENT"
         // ========================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUorKzQCLp7qoZM9xilpvcwoUmyN7nxH08_w4V9xjgz_uiMuBovOd1YBxtUSpskX-k/exec'; 
 
@@ -611,7 +611,6 @@
             document.getElementById('doc-title').innerText = `${name} - Dashboard`;
             document.getElementById('loading-brand-name').innerText = `Memuat ${name}...`;
             
-            // Ubah teks login sesuai instruksi
             document.getElementById('login-brand-name').innerText = `${name} Official`;
             
             const forgotEl = document.getElementById('forgot-brand-name');
@@ -941,8 +940,6 @@
             if(id === 'modal-add-product') document.getElementById('form-add-product').reset();
         }
 
-        // --- AGENCY CRUD DENGAN ASSIGN PRODUK TERPADU ---
-
         function openCreateAgencyModal() {
             const container = document.getElementById('create-agency-products');
             if(appState.allProducts.length === 0) {
@@ -996,13 +993,13 @@
             document.getElementById('edit-agency-phone').value = agency.phone;
 
             const container = document.getElementById('edit-agency-products');
-            const agencyProdIds = agency.assignedProducts ? agency.assignedProducts.map(p => p.id) : [];
+            const agencyProdIds = agency.assignedProducts ? agency.assignedProducts.map(p => String(p.id)) : [];
 
             if(appState.allProducts.length === 0) {
                 container.innerHTML = `<p class="text-sm text-gray-500">Anda tidak memiliki produk yang bisa dibagikan.</p>`;
             } else {
                 container.innerHTML = appState.allProducts.map(p => {
-                    const isChecked = agencyProdIds.includes(p.id) ? 'checked' : '';
+                    const isChecked = agencyProdIds.includes(String(p.id)) ? 'checked' : '';
                     return `
                     <label class="flex items-center space-x-3 p-2 hover:bg-dark rounded transition-colors cursor-pointer">
                         <input type="checkbox" value="${p.id}" ${isChecked} class="custom-checkbox rounded bg-dark border-borderMain">
