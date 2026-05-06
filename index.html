@@ -7,83 +7,105 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { primary: '#4f46e5', primaryHover: '#4338ca', dark: '#111827', } } } }
+        tailwind.config = { 
+            theme: { 
+                extend: { 
+                    colors: { 
+                        primary: '#FF6A00', 
+                        primaryHover: '#E65C00', 
+                        dark: '#0B0B0B',
+                        card: '#1A1A1A',
+                        textMain: '#F5F5F5',
+                        borderMain: '#2A2A2A'
+                    } 
+                } 
+            } 
+        }
     </script>
     <style>
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        ::-webkit-scrollbar-track { background: #0B0B0B; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #FF6A00; }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #4f46e5; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
+        .loader { border: 3px solid #2A2A2A; border-top: 3px solid #FF6A00; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .prose a { color: #4f46e5; text-decoration: underline; }
+        .prose a { color: #FF6A00; text-decoration: underline; }
         .prose ul { list-style-type: disc; padding-left: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem;}
+        
+        /* Ubah warna autofill browser */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #0B0B0B inset !important;
+            -webkit-text-fill-color: #F5F5F5 !important;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans antialiased h-screen overflow-hidden flex">
+<body class="bg-dark text-textMain font-sans antialiased h-screen overflow-hidden flex">
 
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="fixed top-4 right-4 z-50 transform transition-all duration-300 translate-x-full opacity-0">
-        <div class="bg-white rounded-lg shadow-lg border-l-4 border-primary p-4 flex items-start w-80">
+        <div class="bg-card rounded-lg shadow-2xl border-l-4 border-primary p-4 flex items-start w-80">
             <div id="toast-icon" class="text-primary mr-3 mt-0.5"><i data-lucide="check-circle" class="w-5 h-5"></i></div>
             <div>
-                <h4 id="toast-title" class="text-sm font-bold text-gray-900">Success</h4>
-                <p id="toast-message" class="text-sm text-gray-500 mt-1">Action completed successfully.</p>
+                <h4 id="toast-title" class="text-sm font-bold text-textMain">Success</h4>
+                <p id="toast-message" class="text-sm text-gray-400 mt-1">Action completed successfully.</p>
             </div>
         </div>
     </div>
 
     <!-- LOADING VIEW -->
-    <div id="loading-view" class="fixed inset-0 bg-gray-50 z-50 flex flex-col items-center justify-center fade-in">
-        <div class="bg-white p-8 rounded-2xl shadow-xl flex flex-col items-center max-w-sm w-full">
-            <div id="loading-logo" class="w-16 h-16 mb-4 flex items-center justify-center">
-                <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+    <div id="loading-view" class="fixed inset-0 bg-dark z-50 flex flex-col items-center justify-center fade-in">
+        <div class="bg-card border border-borderMain p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm w-full">
+            <div id="loading-logo" class="w-16 h-16 mb-4 flex items-center justify-center overflow-hidden rounded-xl">
+                <div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
                     <i data-lucide="shield-check" class="w-6 h-6 text-primary"></i>
                 </div>
             </div>
-            <h1 id="loading-brand-name" class="text-2xl font-bold text-gray-900 mb-2">Memuat Sistem...</h1>
-            <p class="text-gray-500 text-sm mb-6 text-center">Menghubungkan ke server...</p>
+            <h1 id="loading-brand-name" class="text-2xl font-bold text-textMain mb-2">Memuat Sistem...</h1>
+            <p class="text-gray-400 text-sm mb-6 text-center">Menghubungkan ke server...</p>
             <div class="loader"></div>
         </div>
     </div>
 
     <!-- ERROR VIEW -->
-    <div id="error-view" class="hidden fixed inset-0 bg-gray-50 z-40 flex flex-col items-center justify-center fade-in">
-        <div class="bg-white p-8 rounded-2xl shadow-lg flex flex-col items-center max-w-md w-full text-center">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
-                <i data-lucide="lock" class="w-8 h-8 text-red-600"></i>
+    <div id="error-view" class="hidden fixed inset-0 bg-dark z-40 flex flex-col items-center justify-center fade-in">
+        <div class="bg-card border border-borderMain p-8 rounded-2xl shadow-2xl flex flex-col items-center max-w-md w-full text-center">
+            <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mb-6">
+                <i data-lucide="lock" class="w-8 h-8 text-red-500"></i>
             </div>
-            <h1 class="text-2xl font-bold text-gray-900 mb-2">Access Denied</h1>
-            <p id="error-message" class="text-gray-500 mb-6">Sesi Anda telah berakhir atau akses ditolak.</p>
+            <h1 class="text-2xl font-bold text-textMain mb-2">Access Denied</h1>
+            <p id="error-message" class="text-gray-400 mb-6">Sesi Anda telah berakhir atau akses ditolak.</p>
             <button onclick="logout()" class="bg-primary hover:bg-primaryHover text-white px-6 py-2 rounded-lg font-medium transition-colors">Kembali ke Login</button>
         </div>
     </div>
 
     <!-- LOGIN VIEW -->
-    <div id="login-view" class="hidden fixed inset-0 bg-gray-50 z-40 flex flex-col items-center justify-center fade-in">
-        <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
+    <div id="login-view" class="hidden fixed inset-0 bg-dark z-40 flex flex-col items-center justify-center fade-in">
+        <div class="bg-card p-8 rounded-2xl shadow-2xl w-full max-w-md border border-borderMain">
             <div class="flex flex-col items-center justify-center mb-6">
-                <div id="login-logo" class="w-16 h-16 mb-2 flex items-center justify-center">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                <div id="login-logo" class="w-16 h-16 mb-2 flex items-center justify-center overflow-hidden rounded-xl">
+                    <div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
                         <i data-lucide="layers" class="w-6 h-6 text-primary"></i>
                     </div>
                 </div>
-                <h2 id="login-brand-name" class="text-2xl font-bold text-gray-900 text-center">Welcome Back</h2>
+                <h2 id="login-brand-name" class="text-2xl font-bold text-textMain text-center">Welcome Back</h2>
             </div>
-            <p class="text-gray-500 text-sm text-center mb-8">Masuk ke akun Anda.</p>
+            <p class="text-gray-400 text-sm text-center mb-8">Masuk ke akun Anda.</p>
             
             <form id="form-login" onsubmit="handleLogin(event)" class="space-y-5">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" id="login-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <input type="email" id="login-email" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder-gray-600">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                    <input type="password" id="login-password" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" id="login-password" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder-gray-600">
                 </div>
-                <button type="submit" id="btn-submit-login" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors">
+                <button type="submit" id="btn-submit-login" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
                     Sign In
                 </button>
             </form>
@@ -92,30 +114,36 @@
 
     <!-- MAIN APPLICATION -->
     <div id="app-view" class="hidden w-full h-full flex">
-        <aside class="w-64 bg-dark text-white flex flex-col transition-all duration-300 z-20 shadow-xl relative">
-            <div class="h-16 flex items-center px-6 border-b border-gray-800">
-                <div id="sidebar-logo" class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-indigo-500/30 overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-64 bg-dark border-r border-borderMain flex flex-col transition-all duration-300 z-20 relative">
+            <div class="h-16 flex items-center px-6 border-b border-borderMain bg-card/50">
+                <div id="sidebar-logo" class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center mr-3 shadow-lg shadow-primary/30 overflow-hidden">
                     <i data-lucide="layers" class="w-5 h-5 text-white"></i>
                 </div>
-                <span id="sidebar-brand-name" class="text-lg font-bold tracking-wide truncate">iMersGate</span>
+                <span id="sidebar-brand-name" class="text-lg font-bold tracking-wide truncate text-textMain">iMersGate</span>
             </div>
             <nav class="flex-1 py-6 px-3 space-y-1" id="nav-menu"></nav>
-            <div class="p-4 border-t border-gray-800">
+            <div class="p-4 border-t border-borderMain flex flex-col space-y-4 bg-card/50">
+                <button onclick="logout()" class="w-full flex items-center px-4 py-2 text-sm font-medium text-red-500 hover:text-red-400 hover:bg-borderMain rounded-lg transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4 mr-3"></i> Keluar (Logout)
+                </button>
                 <div class="flex items-center px-2">
-                    <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-sm font-medium mr-3" id="user-avatar">A</div>
+                    <div class="w-8 h-8 rounded-full bg-borderMain flex items-center justify-center text-sm font-medium mr-3 text-primary" id="user-avatar">A</div>
                     <div class="overflow-hidden">
-                        <p class="text-sm font-medium truncate" id="user-name">Loading...</p>
-                        <p class="text-xs text-gray-400 truncate capitalize" id="user-role">Role</p>
+                        <p class="text-sm font-medium truncate text-textMain" id="user-name">Loading...</p>
+                        <p class="text-xs text-primary truncate capitalize" id="user-role">Role</p>
                     </div>
                 </div>
             </div>
         </aside>
 
-        <main class="flex-1 flex flex-col h-full bg-gray-50 overflow-hidden relative">
-            <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 z-10">
-                <h2 class="text-xl font-bold text-gray-800" id="page-title">Dashboard</h2>
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full bg-dark overflow-hidden relative">
+            <header class="h-16 bg-card border-b border-borderMain flex items-center justify-between px-8 z-10">
+                <h2 class="text-xl font-bold text-textMain" id="page-title">Dashboard</h2>
                 <div class="flex items-center space-x-4">
-                    <span class="bg-indigo-50 text-primary text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="header-role-badge">Admin</span>
+                    <span class="bg-primary/10 text-primary border border-primary/20 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" id="header-role-badge">Admin</span>
                 </div>
             </header>
 
@@ -126,10 +154,10 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" id="stats-container"></div>
                     <div class="mb-6 flex justify-between items-end">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900">Your Products</h3>
-                            <p class="text-sm text-gray-500">Digital assets available for distribution.</p>
+                            <h3 class="text-lg font-bold text-textMain">Your Products</h3>
+                            <p class="text-sm text-gray-400">Digital assets available for distribution.</p>
                         </div>
-                        <button id="btn-add-product" onclick="openModal('modal-add-product')" class="hidden bg-dark hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-colors">
+                        <button id="btn-add-product" onclick="openModal('modal-add-product')" class="hidden bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center transition-colors shadow-lg shadow-primary/20">
                             <i data-lucide="plus" class="w-4 h-4 mr-2"></i> New Product
                         </button>
                     </div>
@@ -140,24 +168,24 @@
                 <div id="view-agencies" class="view-section hidden fade-in">
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900">Agency Management</h3>
-                            <p class="text-sm text-gray-500">View and manage all registered agencies.</p>
+                            <h3 class="text-lg font-bold text-textMain">Agency Management</h3>
+                            <p class="text-sm text-gray-400">Kelola akun agency bawahan Anda dan atur akses produk mereka.</p>
                         </div>
-                        <button onclick="openModal('modal-create-agency')" class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-sm transition-colors">
+                        <button onclick="openModal('modal-create-agency')" class="bg-primary hover:bg-primaryHover text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center shadow-lg shadow-primary/20 transition-colors">
                             <i data-lucide="user-plus" class="w-4 h-4 mr-2"></i> Create Agency
                         </button>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
+                    <div class="bg-card rounded-xl shadow-lg border border-borderMain overflow-hidden">
+                        <table class="min-w-full divide-y divide-borderMain">
+                            <thead class="bg-[#222]">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agency</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Creator ID</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Agency</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Contact</th>
+                                    <th class="px-6 py-3 text-left text-xs font-bold text-gray-300 uppercase tracking-wider">Produk Akses</th>
+                                    <th class="px-6 py-3 text-right text-xs font-bold text-gray-300 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="agencies-table-body"></tbody>
+                            <tbody class="bg-card divide-y divide-borderMain" id="agencies-table-body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -165,55 +193,55 @@
                 <!-- SETTINGS VIEW (ADMIN ONLY) -->
                 <div id="view-settings" class="view-section hidden fade-in">
                     <div class="mb-6">
-                        <h3 class="text-lg font-bold text-gray-900">Pengaturan Sistem</h3>
-                        <p class="text-sm text-gray-500">Konfigurasi Identitas Aplikasi dan Gateway WhatsApp.</p>
+                        <h3 class="text-lg font-bold text-textMain">Pengaturan Sistem</h3>
+                        <p class="text-sm text-gray-400">Konfigurasi Identitas Aplikasi dan Gateway WhatsApp.</p>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-2xl">
+                    <div class="bg-card rounded-xl shadow-lg border border-borderMain overflow-hidden max-w-2xl">
                         <form id="form-update-settings" onsubmit="handleSaveSettings(event)" class="p-6 space-y-6">
                             
                             <!-- Branding Settings -->
-                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                                <h4 class="text-sm font-bold text-blue-900 mb-4 flex items-center">
-                                    <i data-lucide="layout-template" class="w-4 h-4 mr-2"></i> Branding & Tampilan
+                            <div class="bg-[#222] border border-borderMain rounded-lg p-4">
+                                <h4 class="text-sm font-bold text-gray-200 mb-4 flex items-center">
+                                    <i data-lucide="layout-template" class="w-4 h-4 mr-2 text-primary"></i> Branding & Tampilan
                                 </h4>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Nama Brand Aplikasi</label>
-                                        <input type="text" id="setting-brand-name" placeholder="Misal: iMersGate" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Nama Brand Aplikasi</label>
+                                        <input type="text" id="setting-brand-name" placeholder="Misal: iMersGate" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">URL Logo (Opsional)</label>
-                                        <input type="url" id="setting-logo-url" placeholder="https://domain.com/logo.png" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">URL Logo (Opsional)</label>
+                                        <input type="url" id="setting-logo-url" placeholder="https://domain.com/logo.png" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
                                 </div>
                             </div>
 
                             <!-- WA Settings -->
-                            <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-4">
-                                <h4 class="text-sm font-bold text-indigo-900 mb-4 flex items-center">
-                                    <i data-lucide="message-square" class="w-4 h-4 mr-2"></i> WhatsApp Gateway Settings
+                            <div class="bg-[#222] border border-borderMain rounded-lg p-4">
+                                <h4 class="text-sm font-bold text-gray-200 mb-4 flex items-center">
+                                    <i data-lucide="message-square" class="w-4 h-4 mr-2 text-primary"></i> WhatsApp Gateway Settings
                                 </h4>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">WA Provider</label>
-                                        <select id="setting-wa-provider" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">WA Provider</label>
+                                        <select id="setting-wa-provider" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                             <option value="fonnte">Fonnte API</option>
                                             <option value="xsender">Xsender ID</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">API Token</label>
-                                        <input type="text" id="setting-wa-token" placeholder="Masukkan Token/API Key WA Anda" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">API Token</label>
+                                        <input type="text" id="setting-wa-token" placeholder="Masukkan Token/API Key WA Anda" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Admin Sender Number <span class="text-xs text-gray-400 font-normal">(Wajib jika pakai Xsender)</span></label>
-                                        <input type="text" id="setting-wa-admin" placeholder="081234567890" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Admin Sender Number <span class="text-xs text-gray-500 font-normal">(Wajib jika pakai Xsender)</span></label>
+                                        <input type="text" id="setting-wa-admin" placeholder="081234567890" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                     </div>
                                 </div>
                             </div>
 
                             <div class="pt-4 flex justify-end">
-                                <button type="submit" id="btn-submit-settings" class="px-6 py-2 text-sm font-medium bg-primary hover:bg-primaryHover text-white rounded-lg transition-colors flex items-center">
+                                <button type="submit" id="btn-submit-settings" class="px-6 py-2 text-sm font-medium bg-primary hover:bg-primaryHover text-white rounded-lg transition-colors flex items-center shadow-lg shadow-primary/20">
                                     <i data-lucide="save" class="w-4 h-4 mr-2"></i> Simpan Pengaturan
                                 </button>
                             </div>
@@ -224,44 +252,41 @@
                 <!-- ACCOUNT VIEW -->
                 <div id="view-account" class="view-section hidden fade-in">
                     <div class="mb-6">
-                        <h3 class="text-lg font-bold text-gray-900">Pengaturan Akun</h3>
-                        <p class="text-sm text-gray-500">Perbarui profil dan password Anda.</p>
+                        <h3 class="text-lg font-bold text-textMain">Pengaturan Akun</h3>
+                        <p class="text-sm text-gray-400">Perbarui profil dan password Anda.</p>
                     </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden max-w-2xl">
+                    <div class="bg-card rounded-xl shadow-lg border border-borderMain overflow-hidden max-w-2xl">
                         <form id="form-update-profile" onsubmit="handleUpdateProfile(event)" class="p-6 space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                                    <input type="text" id="profile-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Nama Lengkap</label>
+                                    <input type="text" id="profile-name" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                    <input type="email" id="profile-email" disabled class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-500 rounded-lg cursor-not-allowed">
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                                    <input type="email" id="profile-email" disabled class="w-full px-4 py-2 bg-[#222] border border-borderMain text-gray-500 rounded-lg cursor-not-allowed">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
-                                    <input type="text" id="profile-phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <label class="block text-sm font-medium text-gray-300 mb-1">Nomor WhatsApp</label>
+                                    <input type="text" id="profile-phone" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                                 </div>
                             </div>
-                            <hr class="border-gray-100">
+                            <hr class="border-borderMain">
                             <div>
-                                <h4 class="text-sm font-bold text-gray-900 mb-4">Ubah Password</h4>
+                                <h4 class="text-sm font-bold text-gray-200 mb-4">Ubah Password</h4>
                                 <div class="space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Password Saat Ini</label>
-                                        <input type="password" id="profile-old-password" placeholder="Kosongkan jika tidak ingin mengubah" class="w-full px-4 py-2 border border-gray-300 rounded-lg max-w-md">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Password Saat Ini</label>
+                                        <input type="password" id="profile-old-password" placeholder="Kosongkan jika tidak ingin mengubah" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none max-w-md">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
-                                        <input type="password" id="profile-new-password" class="w-full px-4 py-2 border border-gray-300 rounded-lg max-w-md">
+                                        <label class="block text-sm font-medium text-gray-300 mb-1">Password Baru</label>
+                                        <input type="password" id="profile-new-password" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none max-w-md">
                                     </div>
                                 </div>
                             </div>
-                            <div class="pt-4 flex justify-between items-center border-t border-gray-100">
-                                <button type="button" onclick="logout()" class="text-red-600 hover:text-red-700 text-sm font-medium flex items-center">
-                                    <i data-lucide="log-out" class="w-4 h-4 mr-2"></i> Keluar (Logout)
-                                </button>
-                                <button type="submit" id="btn-submit-profile" class="px-6 py-2 text-sm font-medium bg-primary hover:bg-primaryHover text-white rounded-lg">Simpan Perubahan</button>
+                            <div class="pt-4 flex justify-end">
+                                <button type="submit" id="btn-submit-profile" class="px-6 py-2 text-sm font-medium bg-primary hover:bg-primaryHover text-white rounded-lg shadow-lg shadow-primary/20">Simpan Perubahan</button>
                             </div>
                         </form>
                     </div>
@@ -275,104 +300,115 @@
     
     <!-- Confirm Modal (Hapus) -->
     <div id="modal-confirm" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('modal-confirm')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-white rounded-2xl shadow-2xl flex flex-col fade-in p-6 text-center">
-            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="alert-triangle" class="w-8 h-8 text-red-600"></i>
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-confirm')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in p-6 text-center">
+            <div class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/30">
+                <i data-lucide="alert-triangle" class="w-8 h-8 text-red-500"></i>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2" id="confirm-title">Konfirmasi</h3>
-            <p class="text-gray-500 text-sm mb-6" id="confirm-message">Apakah Anda yakin ingin menghapus data ini?</p>
+            <h3 class="text-xl font-bold text-textMain mb-2" id="confirm-title">Konfirmasi</h3>
+            <p class="text-gray-400 text-sm mb-6" id="confirm-message">Apakah Anda yakin ingin menghapus data ini?</p>
             <div class="flex justify-center space-x-3">
-                <button type="button" onclick="closeModal('modal-confirm')" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg w-full">Batal</button>
-                <button type="button" id="btn-confirm-action" onclick="executeConfirm()" class="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg w-full flex justify-center items-center">Hapus</button>
+                <button type="button" onclick="closeModal('modal-confirm')" class="px-4 py-2 text-sm font-medium text-gray-300 bg-[#222] hover:bg-borderMain rounded-lg w-full transition-colors">Batal</button>
+                <button type="button" id="btn-confirm-action" onclick="executeConfirm()" class="px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg w-full flex justify-center items-center shadow-lg shadow-red-600/20 transition-colors">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kelola Akses Produk -->
+    <div id="modal-manage-access" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-manage-access')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain bg-[#1A1A1A]">
+                <h3 class="text-lg font-bold text-textMain">Kelola Akses Produk</h3>
+                <button onclick="closeModal('modal-manage-access')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <p class="text-sm text-gray-400 mb-4">Mengelola akses untuk: <strong id="manage-access-agency-name" class="text-primary"></strong></p>
+                
+                <input type="hidden" id="manage-access-agency-id">
+                
+                <!-- Tambah Akses Baru -->
+                <div class="flex space-x-2 mb-6">
+                    <select id="manage-access-product-select" class="flex-1 px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg text-sm focus:ring-2 focus:ring-primary outline-none">
+                        <option value="" disabled selected>Pilih produk untuk ditambahkan...</option>
+                        <!-- Injected via JS -->
+                    </select>
+                    <button id="btn-add-access" onclick="handleAddAccess()" class="px-4 py-2 bg-primary hover:bg-primaryHover text-white rounded-lg text-sm font-medium transition-colors flex items-center">
+                        <i data-lucide="plus" class="w-4 h-4 mr-1"></i> Tambah
+                    </button>
+                </div>
+
+                <hr class="border-borderMain mb-4">
+                
+                <!-- Daftar Akses Saat Ini -->
+                <h4 class="text-sm font-bold text-gray-300 mb-3">Produk yang Dimiliki:</h4>
+                <div class="border border-borderMain rounded-lg overflow-hidden">
+                    <ul id="manage-access-list" class="divide-y divide-borderMain max-h-48 overflow-y-auto bg-dark">
+                        <!-- Injected via JS -->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Create Agency Modal -->
     <div id="modal-create-agency" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-create-agency')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900">Create New Agency</h3>
-                <button onclick="closeModal('modal-create-agency')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-create-agency')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain">
+                <h3 class="text-lg font-bold text-textMain">Create New Agency</h3>
+                <button onclick="closeModal('modal-create-agency')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="form-create-agency" class="p-6 space-y-4" onsubmit="handleCreateAgency(event)">
-                <div class="bg-blue-50 text-blue-800 text-xs p-3 rounded-lg mb-4 flex items-start">
+                <div class="bg-primary/10 border border-primary/20 text-primary text-xs p-3 rounded-lg mb-4 flex items-start">
                     <i data-lucide="info" class="w-4 h-4 mr-2 mt-0.5 flex-shrink-0"></i>
                     <span>This new agency will inherit a snapshot of <strong>all products</strong> currently assigned to you.</span>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Agency Name</label>
-                    <input type="text" id="agency-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Agency Name</label>
+                    <input type="text" id="agency-name" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="agency-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="agency-email" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
-                    <input type="text" id="agency-phone" required placeholder="e.g. 08123456789" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
+                    <input type="text" id="agency-phone" required placeholder="e.g. 08123456789" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('modal-create-agency')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-submit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg">Create & Notify</button>
+                    <button type="button" onclick="closeModal('modal-create-agency')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" id="btn-submit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Create & Notify</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Agency Modal (Admin Only) -->
+    <!-- Edit Agency Modal -->
     <div id="modal-edit-agency" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-edit-agency')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900">Edit Agency</h3>
-                <button onclick="closeModal('modal-edit-agency')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-edit-agency')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain">
+                <h3 class="text-lg font-bold text-textMain">Edit Profil Agency</h3>
+                <button onclick="closeModal('modal-edit-agency')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="form-edit-agency" class="p-6 space-y-4" onsubmit="handleEditAgency(event)">
                 <input type="hidden" id="edit-agency-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Agency Name</label>
-                    <input type="text" id="edit-agency-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Agency Name</label>
+                    <input type="text" id="edit-agency-name" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" id="edit-agency-email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                    <input type="email" id="edit-agency-email" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">WhatsApp Number</label>
-                    <input type="text" id="edit-agency-phone" required class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">WhatsApp Number</label>
+                    <input type="text" id="edit-agency-phone" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('modal-edit-agency')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-submit-edit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg">Simpan Perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Assign Product Modal -->
-    <div id="modal-assign-product" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-assign-product')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900">Assign Product</h3>
-                <button onclick="closeModal('modal-assign-product')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            <form id="form-assign-product" class="p-6 space-y-4" onsubmit="handleAssignProduct(event)">
-                <input type="hidden" id="assign-agency-id">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Target Agency</label>
-                    <input type="text" id="assign-agency-name" disabled class="w-full px-4 py-2 bg-gray-50 border border-gray-200 text-gray-500 rounded-lg">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Select Product</label>
-                    <select id="assign-product-id" required class="w-full px-4 py-2 border border-gray-300 rounded-lg"></select>
-                </div>
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('modal-assign-product')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Cancel</button>
-                    <button type="submit" id="btn-submit-assign" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg">Assign Product</button>
+                    <button type="button" onclick="closeModal('modal-edit-agency')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Cancel</button>
+                    <button type="submit" id="btn-submit-edit-agency" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -380,29 +416,29 @@
 
     <!-- Create Product Modal -->
     <div id="modal-add-product" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-add-product')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900">Tambah Produk Baru</h3>
-                <button onclick="closeModal('modal-add-product')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-add-product')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain">
+                <h3 class="text-lg font-bold text-textMain">Tambah Produk Baru</h3>
+                <button onclick="closeModal('modal-add-product')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="form-add-product" class="p-6 space-y-4" onsubmit="handleAddProduct(event)">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-                    <input type="text" id="new-product-name" required placeholder="Contoh: E-Course Master" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Nama Produk</label>
+                    <input type="text" id="new-product-name" required placeholder="Contoh: E-Course Master" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">URL Gambar Cover (Opsional)</label>
-                    <input type="url" id="new-product-image" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">URL Gambar Cover (Opsional)</label>
+                    <input type="url" id="new-product-image" placeholder="https://example.com/image.jpg" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Konten Akses (Dukung HTML / Link Download)</label>
-                    <textarea id="new-product-content" rows="5" placeholder="Contoh: <a href='https://link.com'>Download Materi Disini</a>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm"></textarea>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Konten Akses (Dukung HTML / Link Download)</label>
+                    <textarea id="new-product-content" rows="5" placeholder="Contoh: <a href='https://link.com'>Download Materi Disini</a>" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm"></textarea>
                     <p class="text-xs text-gray-500 mt-1">Gunakan tag HTML standar untuk link atau teks tebal.</p>
                 </div>
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('modal-add-product')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Batal</button>
-                    <button type="submit" id="btn-submit-new-product" class="px-4 py-2 text-sm font-medium bg-dark hover:bg-gray-800 text-white rounded-lg">Simpan Produk</button>
+                    <button type="button" onclick="closeModal('modal-add-product')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Batal</button>
+                    <button type="submit" id="btn-submit-new-product" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Simpan Produk</button>
                 </div>
             </form>
         </div>
@@ -410,29 +446,29 @@
 
     <!-- Edit Product Modal -->
     <div id="modal-edit-product" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm" onclick="closeModal('modal-edit-product')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white rounded-2xl shadow-2xl flex flex-col fade-in">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-gray-900">Edit Produk</h3>
-                <button onclick="closeModal('modal-edit-product')" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-edit-product')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain">
+                <h3 class="text-lg font-bold text-textMain">Edit Produk</h3>
+                <button onclick="closeModal('modal-edit-product')" class="text-gray-400 hover:text-gray-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="form-edit-product" class="p-6 space-y-4" onsubmit="handleEditProduct(event)">
                 <input type="hidden" id="edit-product-id">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Produk</label>
-                    <input type="text" id="edit-product-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Nama Produk</label>
+                    <input type="text" id="edit-product-name" required class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">URL Gambar Cover</label>
-                    <input type="url" id="edit-product-image" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none">
+                    <label class="block text-sm font-medium text-gray-300 mb-1">URL Gambar Cover</label>
+                    <input type="url" id="edit-product-image" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Konten Akses (HTML)</label>
-                    <textarea id="edit-product-content" rows="5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm"></textarea>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Konten Akses (HTML)</label>
+                    <textarea id="edit-product-content" rows="5" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm"></textarea>
                 </div>
                 <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal('modal-edit-product')" class="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Batal</button>
-                    <button type="submit" id="btn-submit-edit-product" class="px-4 py-2 text-sm font-medium bg-dark hover:bg-gray-800 text-white rounded-lg">Update Produk</button>
+                    <button type="button" onclick="closeModal('modal-edit-product')" class="px-4 py-2 text-sm font-medium text-gray-400 hover:text-textMain hover:bg-borderMain rounded-lg transition-colors">Batal</button>
+                    <button type="submit" id="btn-submit-edit-product" class="px-4 py-2 text-sm font-medium bg-primary text-white rounded-lg shadow-lg shadow-primary/20">Update Produk</button>
                 </div>
             </form>
         </div>
@@ -440,21 +476,21 @@
 
     <!-- View Product Content Modal -->
     <div id="modal-view-product" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onclick="closeModal('modal-view-product')"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-white rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
-            <div class="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50">
-                <h3 class="text-xl font-bold text-gray-900 flex items-center" id="view-product-title">
+        <div class="absolute inset-0 bg-dark/80 backdrop-blur-sm" onclick="closeModal('modal-view-product')"></div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-card border border-borderMain rounded-2xl shadow-2xl flex flex-col fade-in max-h-[90vh] overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b border-borderMain bg-[#1A1A1A]">
+                <h3 class="text-xl font-bold text-textMain flex items-center" id="view-product-title">
                     <i data-lucide="box" class="w-5 h-5 mr-2 text-primary"></i> Detail Produk
                 </h3>
-                <button onclick="closeModal('modal-view-product')" class="text-gray-400 hover:text-gray-600 bg-white p-1 rounded-md shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="closeModal('modal-view-product')" class="text-gray-400 hover:text-gray-200 bg-[#222] p-1 rounded-md shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="p-8 overflow-y-auto">
-                <div id="view-product-content" class="prose max-w-none text-gray-700 leading-relaxed">
+            <div class="p-8 overflow-y-auto bg-dark">
+                <div id="view-product-content" class="prose max-w-none text-gray-300 leading-relaxed">
                     <!-- Konten HTML diinject via JS -->
                 </div>
             </div>
-            <div class="p-4 border-t border-gray-100 bg-gray-50 text-right">
-                <button onclick="closeModal('modal-view-product')" class="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primaryHover transition-colors">Tutup</button>
+            <div class="p-4 border-t border-borderMain bg-[#1A1A1A] text-right">
+                <button onclick="closeModal('modal-view-product')" class="px-6 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primaryHover transition-colors shadow-lg shadow-primary/20">Tutup</button>
             </div>
         </div>
     </div>
@@ -509,7 +545,11 @@
                 appState.agencies = data.agencies || [];
                 appState.settings = data.settings || {}; 
                 
-                if(appState.user.role === 'admin') appState.allProducts = data.products;
+                if(appState.user.role === 'admin') {
+                    appState.allProducts = data.products;
+                } else {
+                    appState.allProducts = appState.products; // Agency hanya bisa berikan produk yang dimilikinya
+                }
                 
                 if (appState.settings) {
                     localStorage.setItem('imersgate_branding', JSON.stringify({
@@ -560,8 +600,8 @@
             document.getElementById('login-brand-name').innerText = `Masuk ke ${name}`;
             document.getElementById('sidebar-brand-name').innerText = name;
             
-            const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center bg-indigo-100 text-primary"><i data-lucide="layers" class="w-6 h-6"></i></div>`;
-            const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover bg-white">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
+            const logoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center bg-primary/20 text-primary"><i data-lucide="layers" class="w-6 h-6"></i></div>`;
+            const sidebarLogoHtml = logo ? `<img src="${logo}" alt="${name}" class="w-full h-full object-cover bg-[#222]">` : `<i data-lucide="layers" class="w-5 h-5 text-white"></i>`;
             
             document.getElementById('loading-logo').innerHTML = logoHtml;
             document.getElementById('login-logo').innerHTML = logoHtml;
@@ -579,7 +619,7 @@
 
         function executeConfirm() {
             const btn = document.getElementById('btn-confirm-action');
-            btn.innerHTML = `<div class="loader w-4 h-4 mr-2 border-2"></div> Memproses...`;
+            btn.innerHTML = `<div class="loader w-4 h-4 mr-2 border-2 border-red-200 border-t-white"></div> Memproses...`;
             btn.disabled = true;
             if(confirmActionCallback) confirmActionCallback();
         }
@@ -587,7 +627,7 @@
         async function handleLogin(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-login');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Signing in...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Signing in...`;
             btn.disabled = true;
 
             const email = document.getElementById('login-email').value;
@@ -616,7 +656,7 @@
             e.preventDefault();
             const btn = document.getElementById('btn-submit-profile');
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Menyimpan...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Menyimpan...`;
             btn.disabled = true;
 
             const newName = document.getElementById('profile-name').value;
@@ -647,7 +687,7 @@
             e.preventDefault();
             const btn = document.getElementById('btn-submit-settings');
             const originalText = btn.innerHTML;
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Menyimpan...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Menyimpan...`;
             btn.disabled = true;
 
             const payload = {
@@ -677,8 +717,9 @@
             const navMenu = document.getElementById('nav-menu');
             navMenu.innerHTML = '';
             navMenu.appendChild(createNavItem('Dashboard', 'layout-dashboard', 'dashboard', true));
+            navMenu.appendChild(createNavItem('Agencies', 'users', 'agencies', false)); 
+            
             if (appState.user.role === 'admin') {
-                navMenu.appendChild(createNavItem('Agencies', 'users', 'agencies', false));
                 navMenu.appendChild(createNavItem('Pengaturan', 'settings', 'settings', false));
                 document.getElementById('btn-add-product').classList.remove('hidden');
             }
@@ -687,7 +728,7 @@
             const createBtnContainer = document.createElement('div');
             createBtnContainer.className = 'mt-6 px-4';
             createBtnContainer.innerHTML = `
-                <button onclick="openModal('modal-create-agency')" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-indigo-500/20">
+                <button onclick="openModal('modal-create-agency')" class="w-full bg-primary hover:bg-primaryHover text-white py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-colors shadow-lg shadow-primary/20">
                     <i data-lucide="plus-circle" class="w-4 h-4 mr-2"></i> New Agency
                 </button>
             `;
@@ -695,19 +736,19 @@
             
             lucide.createIcons();
             renderDashboard();
-            if(appState.user.role === 'admin') renderAgenciesTable();
+            renderAgenciesTable();
         }
 
         function createNavItem(label, iconName, viewId, isActive) {
             const a = document.createElement('a');
             a.href = '#';
-            a.className = `flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-indigo-600/10 text-indigo-400' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`;
+            a.className = `flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${isActive ? 'bg-borderMain text-primary' : 'text-gray-400 hover:bg-borderMain hover:text-white'}`;
             a.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5 mr-3"></i> ${label}`;
             a.onclick = (e) => {
                 e.preventDefault();
                 switchView(viewId);
-                document.querySelectorAll('#nav-menu a').forEach(el => el.className = 'flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-gray-800 hover:text-white transition-colors');
-                a.className = 'flex items-center px-4 py-2.5 rounded-lg text-sm font-medium bg-indigo-600/10 text-indigo-400 transition-colors';
+                document.querySelectorAll('#nav-menu a').forEach(el => el.className = 'flex items-center px-4 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-borderMain hover:text-white transition-colors');
+                a.className = 'flex items-center px-4 py-2.5 rounded-lg text-sm font-medium bg-borderMain text-primary transition-colors';
             };
             return a;
         }
@@ -720,55 +761,53 @@
 
         function renderDashboard() {
             const statsHtml = `
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mr-4">
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-borderMain flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
                         <i data-lucide="package" class="w-6 h-6 text-primary"></i>
                     </div>
-                    <div><p class="text-sm text-gray-500 font-medium">My Products</p><h4 class="text-2xl font-bold text-gray-900">${appState.products.length}</h4></div>
+                    <div><p class="text-sm text-gray-400 font-medium">My Products</p><h4 class="text-2xl font-bold text-textMain">${appState.products.length}</h4></div>
                 </div>
-                ${appState.user.role === 'admin' ? `
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mr-4">
-                        <i data-lucide="users" class="w-6 h-6 text-green-600"></i>
+                <div class="bg-card p-6 rounded-xl shadow-lg border border-borderMain flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4">
+                        <i data-lucide="users" class="w-6 h-6 text-primary"></i>
                     </div>
-                    <div><p class="text-sm text-gray-500 font-medium">Total Agencies</p><h4 class="text-2xl font-bold text-gray-900">${appState.agencies.length}</h4></div>
-                </div>` : ''}
+                    <div><p class="text-sm text-gray-400 font-medium">Agency Bawahan</p><h4 class="text-2xl font-bold text-textMain">${appState.agencies.length}</h4></div>
+                </div>
             `;
             document.getElementById('stats-container').innerHTML = statsHtml;
 
             const grid = document.getElementById('products-grid');
             if (appState.products.length === 0) {
                 grid.innerHTML = `
-                    <div class="col-span-full bg-white p-10 rounded-xl border border-dashed border-gray-300 flex flex-col items-center justify-center text-center">
-                        <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><i data-lucide="package-open" class="w-8 h-8 text-gray-400"></i></div>
-                        <h4 class="text-gray-900 font-bold">No Products Yet</h4>
-                        <p class="text-gray-500 text-sm mt-1 max-w-sm">You don't have any products assigned to your account. Contact your administrator.</p>
+                    <div class="col-span-full bg-card p-10 rounded-xl border border-dashed border-borderMain flex flex-col items-center justify-center text-center">
+                        <div class="w-16 h-16 bg-[#222] rounded-full flex items-center justify-center mb-4"><i data-lucide="package-open" class="w-8 h-8 text-gray-500"></i></div>
+                        <h4 class="text-textMain font-bold">No Products Yet</h4>
+                        <p class="text-gray-400 text-sm mt-1 max-w-sm">You don't have any produk assigned to your account. Contact your administrator.</p>
                     </div>`;
             } else {
                 grid.innerHTML = appState.products.map(p => `
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col h-full relative">
-                        <!-- Admin Edit/Delete Actions overlay -->
+                    <div class="bg-card rounded-xl shadow-lg border border-borderMain overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all group flex flex-col h-full relative">
                         ${appState.user.role === 'admin' ? `
                         <div class="absolute top-2 right-2 z-10 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <button onclick="openEditProductModal('${p.id}')" title="Edit Produk" class="p-1.5 bg-white/90 rounded text-gray-700 hover:text-primary shadow-sm"><i data-lucide="edit" class="w-4 h-4"></i></button>
-                            <button onclick="confirmDeleteProduct('${p.id}')" title="Hapus Produk" class="p-1.5 bg-white/90 rounded text-red-600 hover:text-red-800 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                            <button onclick="openEditProductModal('${p.id}')" title="Edit Produk" class="p-1.5 bg-dark/80 rounded text-gray-300 hover:text-primary shadow-sm"><i data-lucide="edit" class="w-4 h-4"></i></button>
+                            <button onclick="confirmDeleteProduct('${p.id}')" title="Hapus Produk" class="p-1.5 bg-dark/80 rounded text-red-500 hover:text-red-400 shadow-sm"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
                         ` : ''}
 
-                        <div class="h-40 bg-gray-100 flex items-center justify-center overflow-hidden relative">
+                        <div class="h-40 bg-[#222] flex items-center justify-center overflow-hidden relative">
                             ${p.imageUrl ? 
                               `<img src="${p.imageUrl}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="${p.name}">` : 
-                              `<div class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center"><i data-lucide="box" class="w-12 h-12 text-white/50 group-hover:scale-110 transition-transform"></i></div>`
+                              `<div class="w-full h-full bg-gradient-to-br from-borderMain to-[#111] flex items-center justify-center"><i data-lucide="box" class="w-12 h-12 text-gray-600 group-hover:scale-110 transition-transform"></i></div>`
                             }
                         </div>
                         <div class="p-5 flex-1 flex flex-col justify-between">
                             <div>
-                                <div class="text-xs text-gray-400 mb-1 font-mono">${p.id}</div>
-                                <h4 class="text-lg font-bold text-gray-900 mb-2">${p.name}</h4>
+                                <div class="text-xs text-primary mb-1 font-mono">${p.id}</div>
+                                <h4 class="text-lg font-bold text-textMain mb-2">${p.name}</h4>
                             </div>
-                            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                                <span class="text-xs font-medium px-2 py-1 bg-green-100 text-green-700 rounded">Active</span>
-                                <button onclick="viewProductContent('${p.id}')" class="text-primary text-sm font-medium hover:text-primaryHover bg-indigo-50 px-3 py-1.5 rounded-lg transition-colors flex items-center">Akses Konten <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></button>
+                            <div class="mt-4 pt-4 border-t border-borderMain flex justify-between items-center">
+                                <span class="text-xs font-medium px-2 py-1 bg-primary/10 text-primary rounded">Active</span>
+                                <button onclick="viewProductContent('${p.id}')" class="text-primary text-sm font-medium hover:text-primaryHover bg-dark px-3 py-1.5 rounded-lg border border-borderMain transition-colors flex items-center">Akses Konten <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></button>
                             </div>
                         </div>
                     </div>`).join('');
@@ -789,34 +828,36 @@
         function renderAgenciesTable() {
             const tbody = document.getElementById('agencies-table-body');
             if (appState.agencies.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-gray-500">No agencies registered yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-10 text-center text-gray-500">Belum ada agency yang Anda buat.</td></tr>`;
                 return;
             }
             tbody.innerHTML = appState.agencies.map(a => `
-                <tr class="hover:bg-gray-50 transition-colors">
+                <tr class="hover:bg-borderMain transition-colors border-b border-borderMain">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10 bg-indigo-100 text-primary rounded-full flex items-center justify-center font-bold">${a.name.charAt(0).toUpperCase()}</div>
-                            <div class="ml-4"><div class="text-sm font-medium text-gray-900">${a.name}</div><div class="text-sm text-gray-500 font-mono text-xs mt-0.5">${a.id}</div></div>
+                            <div class="flex-shrink-0 h-10 w-10 bg-primary/20 text-primary rounded-full flex items-center justify-center font-bold">${a.name.charAt(0).toUpperCase()}</div>
+                            <div class="ml-4"><div class="text-sm font-medium text-textMain">${a.name}</div><div class="text-sm text-primary font-mono text-xs mt-0.5">${a.id}</div></div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900 flex items-center"><i data-lucide="mail" class="w-3 h-3 mr-1 text-gray-400"></i> ${a.email}</div>
-                        <div class="text-sm text-gray-500 flex items-center mt-1"><i data-lucide="phone" class="w-3 h-3 mr-1 text-gray-400"></i> ${a.phone}</div>
+                        <div class="text-sm text-gray-300 flex items-center"><i data-lucide="mail" class="w-3 h-3 mr-1 text-gray-500"></i> ${a.email}</div>
+                        <div class="text-sm text-gray-400 flex items-center mt-1"><i data-lucide="phone" class="w-3 h-3 mr-1 text-gray-500"></i> ${a.phone}</div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono text-xs">${a.created_by}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary/10 text-primary border border-primary/20">
+                          ${a.assignedProducts ? a.assignedProducts.length : 0} Produk
+                        </span>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end space-x-2">
-                        <button onclick="openAssignModal('${a.id}', '${a.name.replace(/'/g, "\\'")}')" title="Assign Produk" class="text-primary hover:text-primaryHover bg-indigo-50 hover:bg-indigo-100 p-2 rounded-md transition-colors">
-                            <i data-lucide="plus-square" class="w-4 h-4"></i>
+                        <button onclick="openManageAccessModal('${a.id}', '${a.name.replace(/'/g, "\\'")}')" title="Kelola Akses Produk" class="text-primary hover:text-primaryHover bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors flex items-center">
+                            <i data-lucide="key" class="w-4 h-4 mr-1"></i> Akses
                         </button>
-                        ${appState.user.role === 'admin' ? `
-                        <button onclick="openEditAgencyModal('${a.id}')" title="Edit Agency" class="text-gray-500 hover:text-primary bg-gray-50 hover:bg-gray-100 p-2 rounded-md transition-colors">
+                        <button onclick="openEditAgencyModal('${a.id}')" title="Edit Profil Agency" class="text-gray-400 hover:text-primary bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors">
                             <i data-lucide="edit" class="w-4 h-4"></i>
                         </button>
-                        <button onclick="confirmDeleteAgency('${a.id}')" title="Hapus Agency" class="text-gray-500 hover:text-red-600 bg-gray-50 hover:bg-red-50 p-2 rounded-md transition-colors">
+                        <button onclick="confirmDeleteAgency('${a.id}')" title="Hapus Agency" class="text-red-500 hover:text-red-400 bg-dark hover:bg-[#222] border border-borderMain p-2 rounded-md transition-colors">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
-                        ` : ''}
                     </td>
                 </tr>`).join('');
             lucide.createIcons();
@@ -836,7 +877,7 @@
         async function handleCreateAgency(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-agency');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Creating...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Creating...`;
             btn.disabled = true;
 
             const payload = {
@@ -849,12 +890,11 @@
                 await callBackend('createAgency', { creatorId: appState.user.id, agencyData: payload });
                 showToast('Success', 'Agency created and notified successfully.');
                 closeModal('modal-create-agency');
-                if(appState.user.role === 'admin') {
-                    const data = await callBackend('getDashboardData', { userId: appState.user.id });
-                    appState.agencies = data.agencies;
-                    renderAgenciesTable();
-                    renderDashboard();
-                }
+                
+                const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                appState.agencies = data.agencies;
+                renderAgenciesTable();
+                renderDashboard();
             } catch (err) { showToast('Error', err.message, true); } 
             finally { btn.innerHTML = `Create & Notify`; btn.disabled = false; }
         }
@@ -872,7 +912,7 @@
         async function handleEditAgency(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-edit-agency');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Menyimpan...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Menyimpan...`;
             btn.disabled = true;
 
             const id = document.getElementById('edit-agency-id').value;
@@ -883,7 +923,7 @@
             };
 
             try {
-                await callBackend('updateAgency', { adminId: appState.user.id, agencyId: id, agencyData: payload });
+                await callBackend('updateAgency', { userId: appState.user.id, agencyId: id, agencyData: payload });
                 showToast('Sukses', 'Data Agency berhasil diperbarui.');
                 closeModal('modal-edit-agency');
                 const data = await callBackend('getDashboardData', { userId: appState.user.id });
@@ -896,7 +936,7 @@
         function confirmDeleteAgency(id) {
             showConfirm("Hapus Agency?", "Agency beserta akses produknya akan dihapus permanen. Aksi ini tidak dapat dibatalkan.", async () => {
                 try {
-                    await callBackend('deleteAgency', { adminId: appState.user.id, agencyId: id });
+                    await callBackend('deleteAgency', { userId: appState.user.id, agencyId: id });
                     showToast('Sukses', 'Agency berhasil dihapus.');
                     const data = await callBackend('getDashboardData', { userId: appState.user.id });
                     appState.agencies = data.agencies;
@@ -907,42 +947,97 @@
             });
         }
 
-        // --- PRODUCT ASSIGNMENT ---
+        // --- PRODUCT ACCESS MANAGEMENT ---
 
-        function openAssignModal(agencyId, agencyName) {
-            document.getElementById('assign-agency-id').value = agencyId;
-            document.getElementById('assign-agency-name').value = agencyName;
+        function openManageAccessModal(agencyId, agencyName) {
+            const agency = appState.agencies.find(a => a.id === agencyId);
+            if(!agency) return;
+
+            document.getElementById('manage-access-agency-id').value = agencyId;
+            document.getElementById('manage-access-agency-name').innerText = agencyName;
             
-            const select = document.getElementById('assign-product-id');
-            select.innerHTML = '<option value="" disabled selected>Select a product...</option>' + 
-                appState.allProducts.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
+            const agencyProductIds = agency.assignedProducts ? agency.assignedProducts.map(p => p.id) : [];
+            const availableProducts = appState.allProducts.filter(p => !agencyProductIds.includes(p.id));
+
+            const select = document.getElementById('manage-access-product-select');
+            select.innerHTML = '<option value="" disabled selected>Pilih produk untuk ditambahkan...</option>' + 
+                availableProducts.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
             
-            openModal('modal-assign-product');
+            const listContainer = document.getElementById('manage-access-list');
+            if(agency.assignedProducts && agency.assignedProducts.length > 0) {
+                listContainer.innerHTML = agency.assignedProducts.map(p => `
+                    <li class="px-4 py-3 flex justify-between items-center bg-[#222] border-b border-borderMain">
+                        <div>
+                            <p class="text-sm font-medium text-textMain">${p.name}</p>
+                            <p class="text-xs text-gray-500 font-mono">${p.id}</p>
+                        </div>
+                        <button onclick="confirmRemoveAccess('${agencyId}', '${p.id}')" title="Cabut Akses" class="text-red-500 hover:text-red-400 hover:bg-[#333] p-1.5 rounded transition-colors">
+                            <i data-lucide="x-circle" class="w-4 h-4"></i>
+                        </button>
+                    </li>
+                `).join('');
+            } else {
+                listContainer.innerHTML = `<li class="px-4 py-6 text-center text-sm text-gray-500 bg-dark">Belum ada akses produk.</li>`;
+            }
+
+            lucide.createIcons();
+            openModal('modal-manage-access');
         }
 
-        async function handleAssignProduct(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit-assign');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Assigning...`;
+        async function handleAddAccess() {
+            const agencyId = document.getElementById('manage-access-agency-id').value;
+            const select = document.getElementById('manage-access-product-select');
+            const productId = select.value;
+
+            if(!productId) {
+                showToast('Peringatan', 'Silakan pilih produk terlebih dahulu.', true);
+                return;
+            }
+
+            const btn = document.getElementById('btn-add-access');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<div class="loader w-4 h-4 border-2 border-primary border-t-white"></div>`;
             btn.disabled = true;
 
-            const agencyId = document.getElementById('assign-agency-id').value;
-            const productId = document.getElementById('assign-product-id').value;
-
             try {
-                await callBackend('assignProductToAgency', { adminId: appState.user.id, agencyId, productId });
-                showToast('Success', 'Product assigned and agency notified.');
-                closeModal('modal-assign-product');
+                await callBackend('assignProductToAgency', { userId: appState.user.id, agencyId, productId });
+                showToast('Success', 'Produk berhasil ditambahkan ke Agency.');
+                
+                const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                appState.agencies = data.agencies;
+                renderAgenciesTable();
+                
+                const agency = appState.agencies.find(a => a.id === agencyId);
+                openManageAccessModal(agencyId, agency.name);
+                
             } catch (err) { showToast('Error', err.message, true); } 
-            finally { btn.innerHTML = `Assign Product`; btn.disabled = false; }
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
         }
 
-        // --- PRODUCT CRUD ---
+        function confirmRemoveAccess(agencyId, productId) {
+            showConfirm("Cabut Akses Produk?", "Agency ini tidak akan bisa lagi mengakses konten produk ini.", async () => {
+                try {
+                    await callBackend('removeProductFromAgency', { userId: appState.user.id, agencyId, productId });
+                    showToast('Sukses', 'Akses produk berhasil dicabut.');
+                    
+                    const data = await callBackend('getDashboardData', { userId: appState.user.id });
+                    appState.agencies = data.agencies;
+                    renderAgenciesTable();
+                    
+                    const agency = appState.agencies.find(a => a.id === agencyId);
+                    openManageAccessModal(agencyId, agency.name);
+
+                } catch (err) { showToast('Error', err.message, true); }
+                finally { closeModal('modal-confirm'); }
+            });
+        }
+
+        // --- PRODUCT CRUD (Admin) ---
 
         async function handleAddProduct(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-new-product');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Saving...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Saving...`;
             btn.disabled = true;
 
             const payload = { 
@@ -977,7 +1072,7 @@
         async function handleEditProduct(e) {
             e.preventDefault();
             const btn = document.getElementById('btn-submit-edit-product');
-            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2"></div> Updating...`;
+            btn.innerHTML = `<div class="loader mr-2 w-4 h-4 border-2 border-primary border-t-white"></div> Updating...`;
             btn.disabled = true;
 
             const id = document.getElementById('edit-product-id').value;
