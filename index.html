@@ -44,6 +44,10 @@
 
         /* Checkbox styling */
         .custom-checkbox { accent-color: #FF6A00; width: 1.1rem; height: 1.1rem; cursor: pointer; }
+        
+        /* Custom Color Picker Input Styling */
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-dark text-textMain font-sans antialiased h-screen overflow-hidden flex">
@@ -94,6 +98,7 @@
                         <i data-lucide="layers" class="w-8 h-8 text-primary"></i>
                     </div>
                 </div>
+                <!-- Teks sudah diubah sesuai permintaan -->
                 <h2 id="login-brand-name" class="text-2xl font-bold text-primary text-center">iMersGate Official</h2>
             </div>
             <p class="text-gray-400 text-sm text-center mb-8">Masuk ke akun Anda.</p>
@@ -292,12 +297,42 @@
                                     <code class="text-gray-300">{produk}</code> = Daftar Produk (Otomatis list HTML) <br>
                                     <code class="text-gray-300">{login_btn}</code> = Tombol Login otomatis
                                 </div>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-300 mb-1">Warna/Gradient Header Email</label>
-                                        <input type="text" id="setting-email-bg" placeholder="linear-gradient(135deg, #FF6A00 0%, #cc5500 100%)" class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none font-mono text-sm">
-                                        <p class="text-xs text-gray-500 mt-1">Bisa format Hex (#FF6A00) atau CSS linear-gradient.</p>
+                                <div class="space-y-5">
+                                    
+                                    <!-- UI Color Picker Visual -->
+                                    <div class="bg-dark p-4 border border-borderMain rounded-lg">
+                                        <label class="block text-sm font-bold text-gray-300 mb-3">Background Header Email</label>
+                                        
+                                        <div class="flex items-center space-x-3 mb-4">
+                                            <select id="setting-bg-type" onchange="toggleColorPickers()" class="px-3 py-2 bg-[#222] border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm cursor-pointer shadow-sm">
+                                                <option value="solid">Warna Solid (1 Warna)</option>
+                                                <option value="gradient">Warna Gradient (2 Warna)</option>
+                                            </select>
+                                            
+                                            <div class="flex items-center space-x-2 bg-[#222] p-1.5 rounded-lg border border-borderMain shadow-sm">
+                                                <div class="flex flex-col items-center">
+                                                    <span class="text-[10px] text-gray-500 mb-1">Warna 1</span>
+                                                    <input type="color" id="setting-color-1" value="#FF6A00" oninput="updatePreviewColor()" class="h-8 w-12 bg-transparent border-0 rounded cursor-pointer">
+                                                </div>
+                                                <div id="color-2-container" class="flex flex-col items-center transition-all duration-300">
+                                                    <span class="text-[10px] text-gray-500 mb-1">Warna 2</span>
+                                                    <input type="color" id="setting-color-2" value="#cc5500" oninput="updatePreviewColor()" class="h-8 w-12 bg-transparent border-0 rounded cursor-pointer">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <p class="text-xs text-gray-400 mb-2">Live Preview Header:</p>
+                                            <div id="setting-color-preview" class="w-full h-20 rounded-md flex items-center justify-center shadow-inner border border-gray-800" style="background: linear-gradient(135deg, #FF6A00 0%, #cc5500 100%);">
+                                                <span class="text-white font-bold text-xl tracking-wide opacity-80" id="preview-logo-text">LOGO BRAND</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hidden input for the actual string sent to Code.gs -->
+                                        <input type="hidden" id="setting-email-bg" value="linear-gradient(135deg, #FF6A00 0%, #cc5500 100%)">
                                     </div>
+                                    <!-- End UI Color Picker -->
+
                                     <div>
                                         <label class="block text-sm font-medium text-gray-300 mb-1">Template Agency Baru</label>
                                         <textarea id="setting-tpl-agency" rows="4" placeholder="Kosongkan untuk pakai template default bawaan sistem..." class="w-full px-4 py-2 bg-dark border border-borderMain text-textMain rounded-lg focus:ring-2 focus:ring-primary outline-none text-sm"></textarea>
@@ -364,6 +399,8 @@
                         </form>
                     </div>
                 </div>
+
+                <!-- Dynamic Content Area akan disuntikkan ke sini melalui Javascript -->
 
             </div>
         </main>
@@ -549,7 +586,7 @@
     <!-- FRONTEND LOGIC -->
     <script>
         // ========================================================
-        // URL WEB APP APPS SCRIPT ANDA DI BAWAH INI
+        // URL WEB APP APPS SCRIPT ANDA
         // PASTIKAN MENGGUNAKAN URL DARI "NEW DEPLOYMENT"
         // ========================================================
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwUorKzQCLp7qoZM9xilpvcwoUmyN7nxH08_w4V9xjgz_uiMuBovOd1YBxtUSpskX-k/exec'; 
@@ -630,7 +667,9 @@
                     document.getElementById('setting-wa-token').value = appState.settings.waToken || '';
                     document.getElementById('setting-wa-admin').value = appState.settings.waAdmin || '';
                     
-                    document.getElementById('setting-email-bg').value = appState.settings.emailHeaderBg || '';
+                    // Load Color Settings
+                    loadColorSetting(appState.settings.emailHeaderBg);
+
                     document.getElementById('setting-tpl-agency').value = appState.settings.emailTplAgency || '';
                     document.getElementById('setting-tpl-product').value = appState.settings.emailTplProduct || '';
                     document.getElementById('setting-tpl-reset').value = appState.settings.emailTplReset || '';
@@ -648,6 +687,66 @@
                     document.getElementById('error-view').classList.remove('hidden');
                     document.getElementById('error-message').innerText = err.message;
                 }
+            }
+        }
+
+        // --- COLOR PICKER LOGIC ---
+        function toggleColorPickers() {
+            const type = document.getElementById('setting-bg-type').value;
+            const color2Container = document.getElementById('color-2-container');
+            if (type === 'solid') {
+                color2Container.classList.add('hidden');
+            } else {
+                color2Container.classList.remove('hidden');
+            }
+            updatePreviewColor();
+        }
+
+        function updatePreviewColor() {
+            const type = document.getElementById('setting-bg-type').value;
+            const c1 = document.getElementById('setting-color-1').value;
+            const c2 = document.getElementById('setting-color-2').value;
+            let bgString = '';
+
+            if (type === 'solid') {
+                bgString = c1;
+            } else {
+                bgString = `linear-gradient(135deg, ${c1} 0%, ${c2} 100%)`;
+            }
+
+            document.getElementById('setting-color-preview').style.background = bgString;
+            document.getElementById('setting-email-bg').value = bgString;
+        }
+
+        function loadColorSetting(savedValue) {
+            const bgInput = document.getElementById('setting-email-bg');
+            const typeSelect = document.getElementById('setting-bg-type');
+            const c1Input = document.getElementById('setting-color-1');
+            const c2Input = document.getElementById('setting-color-2');
+            const preview = document.getElementById('setting-color-preview');
+            const color2Container = document.getElementById('color-2-container');
+
+            if (!savedValue) {
+                savedValue = 'linear-gradient(135deg, #FF6A00 0%, #cc5500 100%)';
+            }
+
+            bgInput.value = savedValue;
+            preview.style.background = savedValue;
+
+            if (savedValue.includes('linear-gradient')) {
+                typeSelect.value = 'gradient';
+                const matches = savedValue.match(/#[0-9a-fA-F]{6}/g);
+                if (matches && matches.length >= 2) {
+                    c1Input.value = matches[0];
+                    c2Input.value = matches[1];
+                }
+                color2Container.classList.remove('hidden');
+            } else {
+                typeSelect.value = 'solid';
+                if (savedValue.startsWith('#')) {
+                    c1Input.value = savedValue;
+                }
+                color2Container.classList.add('hidden');
             }
         }
 
@@ -692,6 +791,12 @@
                     sidebarLogoEl.classList.add('bg-primary', 'shadow-lg', 'shadow-primary/30');
                     sidebarLogoEl.classList.remove('bg-transparent');
                 }
+            }
+
+            // Update Email Preview Box Logo
+            const previewText = document.getElementById('preview-logo-text');
+            if (previewText) {
+                previewText.innerText = name.toUpperCase();
             }
 
             lucide.createIcons();
